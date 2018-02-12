@@ -21,7 +21,7 @@ def resize_image(filePath, final_height, final_width):
     elif ratio > final_ratio:
         wanted_height = round(width/final_ratio)
         border = int(wanted_height - height)
-        blank_image = np.zeros((border, height, 3), np.uint8)
+        blank_image = np.zeros((border, width, 3), np.uint8)
         blank_image[:, :] = (255, 255, 255)
         final = np.concatenate((image, blank_image), axis=0)
     else:
