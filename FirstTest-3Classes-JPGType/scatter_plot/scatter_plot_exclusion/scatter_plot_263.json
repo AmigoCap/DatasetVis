@@ -1,0 +1,9 @@
+[
+    "google",
+    "scatter_plot",
+    "Scatter plot matrix - MATLAB plotmatrix",
+    "To set properties for the scatter plots, use S . To set properties for the  histograms, use H . To set axes properties, use AX , BigAx , and HAx .",
+    "MathWorks",
+    "https://www.mathworks.com/help/examples/graphics/win64/SetFigurePropertiesUsingHandlesExample_01.png",
+    "https://www.mathworks.com/help/matlab/ref/plotmatrix.html"
+]

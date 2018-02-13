@@ -1,0 +1,9 @@
+[
+    "google",
+    "bar_chart",
+    "Create Bar Charts, Histograms, and Pie Charts - MuPAD",
+    "To create a 3-D bar chart, use the plot::Bars3d function. This function  accepts matrices and arrays. The function also accepts nested lists with  flat inner ...",
+    "MathWorks",
+    "https://www.mathworks.com/help/symbolic/mupad_ug/math-statistics-visualization-bars-2f42eecd.png",
+    "https://www.mathworks.com/help/symbolic/mupad_ug/create-bar-charts-histograms-and-pie-charts.html"
+]

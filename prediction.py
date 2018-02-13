@@ -7,7 +7,7 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.estimator import regression
 from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
-import scipy
+import glob
 import numpy as np
 import argparse
 import loadData
@@ -42,18 +42,21 @@ network = regression(network, optimizer='adam',
                      learning_rate=0.001)
 
 model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
-model.load("dataviz-classifier.tfl.ckpt-560")
+model.load("./dataviz-classifier.tfl.ckpt-560")
 
+addrs = glob.glob("./test/*.jpg")
+
+for addr in addrs:
 # Scale it to 32x32
-img = loadData.resize_image("/Users/Luca/Desktop/Collecte_classification_Dataviz/image-scrapers-master/dataset/google/barchart/Scrapper_250.jpg",32,32).astype(np.float32, casting='unsafe')
-
+    print(addr)
+    img = loadData.resize_image(addr,32,32).astype(np.float32, casting='unsafe')
 # Predict
-prediction = model.predict([img])
-
+    prediction = model.predict([img])
+    print(prediction[0])
 # Check the result.
-is_bird = np.argmax(prediction[0]) == 1
+    is_bird = np.argmax(prediction[0]) == 1
 
-if is_bird:
-    print("That's a Pie")
-else:
-    print("That's not a Pie")
+    if is_bird:
+        print("That's a Pie")
+    else:
+        print("That's not a Pie")
