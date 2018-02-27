@@ -19,7 +19,7 @@ Cela nous permet d'avoir un ensemble d'images au bon format pour notre réseau d
 ## Auteurs
 
 Arnal Marc  
-Brugière Arnaud
-Guery Luca
-Kraemer Louis
+Brugière Arnaud  
+Guery Luca  
+Kraemer Louis  
 Martin-Delahaye Alexis
