@@ -15,3 +15,11 @@ Le fichier loadData.py permet d'effectuer un traitement préliminaire sur la bas
 - L'image est enregistrée au format ".jpg" dans le dossier data
 
 Cela nous permet d'avoir un ensemble d'images au bon format pour notre réseau de neurones.
+
+## Auteurs
+
+Arnal Marc  
+Brugière Arnaud
+Guery Luca
+Kraemer Louis
+Martin-Delahaye Alexis
