@@ -1,0 +1,9 @@
+[
+    "google",
+    "scatter_plot",
+    "Scatter Plots - R Base Graphs - Easy Guides - Wiki - STHDA",
+    "Add loess fit plot(x, y, main = \"Main title\", xlab = \"X axis title\", ylab =  \"Y axis title\", pch = 19, frame = FALSE) lines(lowess(x, y), col = \"blue\")",
+    "STHDA",
+    "http://www.sthda.com/sthda/RDoc/figure/graphs/scatter-plots-base-scatter-plot-1.png",
+    "http://www.sthda.com/english/wiki/scatter-plots-r-base-graphs"
+]

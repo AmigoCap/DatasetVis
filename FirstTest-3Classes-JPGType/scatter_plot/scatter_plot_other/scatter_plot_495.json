@@ -1,0 +1,9 @@
+[
+    "google",
+    "scatter_plot",
+    "Scatter plot - MATLAB scatter - MathWorks \u4e2d\u56fd",
+    "x = linspace(0,3*pi,200); y = cos(x) + rand(1,200); ax1 = subplot(2,1,1);  scatter(ax1,x,y) ax2 = subplot(2,1,2); scatter(ax2,x,y,'filled','d')",
+    "MathWorks",
+    "http://cn.mathworks.com/help/examples/graphics/win64/SpecifyScatterPlotAxesExample_01.png",
+    "http://cn.mathworks.com/help/matlab/ref/scatter.html?requestedDomain=cn.mathworks.com"
+]
