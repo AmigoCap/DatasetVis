@@ -1,5 +1,12 @@
 # DatasetVis
 
+## Lancement
+
+Pour lancer le script, tapez 
+```
+python3 main.py <chemin/vers/la/base/de/données>
+```
+
 ## Scrapping
 
 Nous utiliserons le script issu du git image-scrapers afin de peupler notre 

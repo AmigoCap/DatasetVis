@@ -1,4 +1,14 @@
 import loadData as ld
+import sys
+import shutil
+import os
 
-# Enter the local folder path of the dataset to convert it into jpeg with the desired height and width, the output will be in the data folder
-ld.resize_dataset('/home/louis/Documents/Dev/Dataset', 32, 32)
+# Check if data folder exists inside local git and delete it to have a clean folder available
+if os.path.isdir('data'):
+    shutil.rmtree('data')
+
+# Retrieve dataset folder path
+folderPath = sys.argv[1]
+
+# Resize all the dataset and copy it inside the data folder
+ld.resize_dataset(folderPath, 32, 32)
