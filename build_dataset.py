@@ -1,77 +1,108 @@
 import numpy as np
 import glob
-from PIL import Image
-import cv2
-from resizeimage import resizeimage
 from random import shuffle
 import loadData
-
-shuffle_data = True
-pie_bar_train_path = "./train/*.jpg"
-
-X = []
-X_test = []
-Y = []
-Y_test = []
-
-addrs = glob.glob(pie_bar_train_path)
-labels = [0 if 'pie' in addr else 1 for addr in addrs]  # 0 = Pie, 1 = Bar
-
-# to shuffle data
-if shuffle_data:
-    c = list(zip(addrs, labels))
-    shuffle(c)
-    addrs, labels = zip(*c)
-
-
-# Divide the data into 70% train, 30% test
-train_addrs = addrs[0:int(0.7*len(addrs))]
-train_labels = labels[0:int(0.7*len(labels))]
-test_addrs = addrs[int(0.7*len(addrs)):]
-test_labels = labels[int(0.7*len(labels)):]
-
-for addr in train_addrs :
-    print(addr)
-    img = loadData.resize_image(addr,32,32)
-    X.append(img)
-
-
-Y = np.asarray(train_labels)
-Y_resize =[]
-for a in Y :
-    if a==1:
-        Y_resize.append([1,0])
-    else:
-        Y_resize.append([0,1])
-
-print(Y_resize)
-
-for addr in test_addrs :
-    img = loadData.resize_image(addr,32,32)
-    X_test.append(img)
-
-
-Y_test = np.asarray(test_labels)
-Y_test_resize =[]
-for a in Y_test :
-    if a==1:
-        Y_test_resize.append([1,0])
-    else:
-        Y_test_resize.append([0,1])
-
-print(Y_test_resize)
-
-X_arr = np.asarray(X)
-X_test_arr = np.asarray(X_test)
-
-
-
 import pickle
+import cv2
+import shutil
+import os
 
-with open('dataset.pkl', 'wb') as f:
-    #train_set, valid_set, test_set = pickle.load(f)
-    pickle.dump((X_arr,Y_resize,X_test_arr,Y_test_resize),f)
+def buildDataSet(path):
+    #Building an images dataset with 3 classes : Line chart Bar chart, Scatter plot
+    shuffle_data = True
 
-with open("dataset.pkl", "rb") as f:
-    a,b,c,d = pickle.load(f)
+    #Contains images of 3 classes : Line Chart, Bar Chart, Scatter Chart
+    #train_path = "./dataset/train-validation/*.jpg"
+    offset_test = 0.1
+    offset_train_val = 0.7
+    X = []
+    X_val = []
+    Y = []
+    Y_val = []
 
+    #Get a list of my images paths
+    addrs = glob.glob(path)
+
+    #Get a list of my training images labels
+    labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+
+    #To shuffle data
+    if shuffle_data:
+        c = list(zip(addrs, labels))
+        shuffle(c)
+        addrs, labels = zip(*c)
+
+    test_addrs = addrs[0:int(offset_test*len(addrs))]
+
+    dst_dir = "./test"
+    for jpgfile in test_addrs:
+        shutil.copy(jpgfile, dst_dir)
+
+    train_val_addrs = addrs[int(offset_test*len(addrs)):]
+    train_val_labels = labels[int(offset_test*len(addrs)):]
+
+
+    #Divide the data into offset% train, offset% validation
+    train_addrs = train_val_addrs[0:int(offset_train_val*len(addrs))]
+    train_labels = train_val_labels[0:int(offset_train_val*len(labels))]
+    validation_addrs = train_val_addrs[int(offset_train_val*len(addrs)):]
+    validation_labels = train_val_labels[int(offset_train_val*len(labels)):]
+
+    #Create a list of image array for the training dataset
+    for addr in train_addrs:
+        img = im.read(addr)
+        X.append(img)
+
+    #Create a list of image labels for the training dataset: [1,0,0] : Line, [0,1,0] : Bar,[0,0,1] : Scatter
+    Y = train_labels
+    Y_train =[]
+    for a in Y :
+        if a==0:
+            Y_train.append([1,0,0])
+        else:
+            if a==1:
+                Y_train.append([0,1,0])
+            else:
+                Y_train.append([0,0,1])
+
+    Y_train = np.asarray(Y_train,dtype='float32')
+
+    #Create a list of resized image array for the validation dataset
+    for addr in validation_addrs :
+        img = im.read(addr)
+        X_val.append(img)
+
+    #Create a list of image labels for the validation dataset: [1,0,0] : Line, [0,1,0] : Bar,[0,0,1] : Scatter
+    Y_val = validation_labels
+    Y_val_resized =[]
+    for a in Y_val :
+        if a==0:
+            Y_val_resized.append([1,0,0])
+        else:
+            if a==1:
+                Y_val_resized.append([0,1,0])
+            else:
+                Y_val_resized.append([0,0,1])
+
+    Y_val_resized = np.asarray(Y_val_resized,dtype='float32')
+
+    X_train = np.asarray(X,dtype='float32')
+    X_val_resized = np.asarray(X_val,dtype='float32')
+
+    print(X_train)
+    print(Y_train)
+    print(X_val_resized)
+    print(Y_val_resized)
+
+    print(X_train.shape)
+    print(Y_train.shape)
+    print(X_val_resized.shape)
+    print(Y_val_resized.shape)
+
+
+    with open('dataset.pkl', 'wb') as f:
+        #train_set, valid_set, test_set = pickle.load(f)
+        pickle.dump((X_train,Y_train,X_val_resized,Y_val_resized),f)
+
+    '''with open("dataset.pkl", "rb") as f:
+        a,b,c,d = pickle.load(f)'''
