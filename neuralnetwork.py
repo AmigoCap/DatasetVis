@@ -24,6 +24,8 @@ with open("dataset.pkl", "rb") as f:
 
     X, Y, X_test, Y_test = u.load()
 
+    print(Y)
+
     X = X.astype('float32')
     X_test = X_test.astype('float32')
 
@@ -47,33 +49,33 @@ img_aug.add_random_blur(sigma_max=3.)
 # Define our network architecture:
 
 # Input is a 32x32 image with 3 color channels (red, green and blue)
-network = input_data(shape=[None, 32, 32, 3],
+network = input_data(shape=[None, 128, 128, 3],
                      data_preprocessing=img_prep,
                      data_augmentation=img_aug)
 
 # Step 1: Convolution
-network = conv_2d(network, 32, 3, activation='relu')
+network = conv_2d(network, 128, 3, activation='relu')
 
 # Step 2: Max pooling
 network = max_pool_2d(network, 2)
 
 # Step 3: Convolution again
-network = conv_2d(network, 64, 3, activation='relu')
+network = conv_2d(network, 512, 3, activation='relu')
 
 # Step 4: Convolution yet again
-network = conv_2d(network, 64, 3, activation='relu')
+network = conv_2d(network, 512, 3, activation='relu')
 
 # Step 5: Max pooling again
 network = max_pool_2d(network, 2)
 
 # Step 6: Fully-connected 512 node neural network
-network = fully_connected(network, 512, activation='relu')
+network = fully_connected(network, 2048, activation='relu')
 
 # Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
 network = dropout(network, 0.5)
 
 # Step 8: Fully-connected neural network with two outputs (0=isn't a bird, 1=is a bird) to make the final prediction
-network = fully_connected(network, 2, activation='softmax')
+network = fully_connected(network, 3, activation='softmax')
 
 # Tell tflearn how we want to train the network
 network = regression(network, optimizer='adam',

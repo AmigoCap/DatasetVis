@@ -50,7 +50,7 @@ def buildDataSet(path):
 
     #Create a list of image array for the training dataset
     for addr in train_addrs:
-        img = im.read(addr)
+        img = cv2.imread(addr)
         X.append(img)
 
     #Create a list of image labels for the training dataset: [1,0,0] : Line, [0,1,0] : Bar,[0,0,1] : Scatter
@@ -69,7 +69,7 @@ def buildDataSet(path):
 
     #Create a list of resized image array for the validation dataset
     for addr in validation_addrs :
-        img = im.read(addr)
+        img = cv2.imread(addr)
         X_val.append(img)
 
     #Create a list of image labels for the validation dataset: [1,0,0] : Line, [0,1,0] : Bar,[0,0,1] : Scatter

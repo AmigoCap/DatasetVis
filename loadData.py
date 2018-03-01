@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import os
 from os.path import isfile, join
+import build_dataset as bd
 
 
 def loadImage(filePath):
@@ -35,11 +36,13 @@ def resize_image(folderPath, fileName, final_height, final_width):
 
     if not os.path.isdir('data'):
         os.makedirs('data')
-    return cv2.imwrite('data/' + fileName, resized_image, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+    return cv2.imwrite('data/' + fileName.split('.')[0] + '.jpg', resized_image, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
 
 
 def resize_dataset(folderPath, height, width):
     images = [f for f in os.listdir(folderPath) if isfile(join(folderPath, f))]
-    for image in images:
-        if not resize_image(folderPath, image, height, width):
-            print(image + ' no success on resize')
+    for i, image in enumerate(images):
+        if image.split('.')[len(image.split('x'))] == 'png' or image.split('.')[len(image.split('x'))] == 'jpg' or image.split('.')[len(image.split('x'))] == 'jpeg':
+            if not resize_image(folderPath, image, height, width):
+                print(image + ' no success on resize')
+    bd.buildDataSet('data/*.jpg')
