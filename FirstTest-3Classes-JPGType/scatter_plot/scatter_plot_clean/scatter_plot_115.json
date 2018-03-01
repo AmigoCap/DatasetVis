@@ -1,9 +1,0 @@
-[
-    "google",
-    "scatter_plot",
-    "scatter - 2D scatter plot",
-    "... 30, length(x)) // set color map gcf().color_map = coolcolormap(64); //  colors according to y values c = y // create 2D scatter plot scatter(x, y,  s, c, ...",
-    "Scilab Online Help",
-    "https://help.scilab.org/docs/6.0.0/fr_FR/scatter_4.png",
-    "https://help.scilab.org/docs/6.0.0/fr_FR/scatter.html"
-]

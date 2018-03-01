@@ -1,9 +1,0 @@
-[
-    "google",
-    "scatter_plot",
-    "Scatter plot matrix - MATLAB plotmatrix",
-    "The subplot in the ith row, jth column of the figure is a scatter plot of  the ith column of Y against the jth column of X .",
-    "MathWorks",
-    "https://www.mathworks.com/help/examples/graphics/win64/CreateScatterPlotMatrixwithTwoMatrixInputsExample_01.png",
-    "https://www.mathworks.com/help/matlab/ref/plotmatrix.html"
-]

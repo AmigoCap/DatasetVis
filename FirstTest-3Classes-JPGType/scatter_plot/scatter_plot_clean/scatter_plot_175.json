@@ -1,9 +1,0 @@
-[
-    "google",
-    "scatter_plot",
-    "ggplot2 scatter plots : Quick start guide - R software and data ...",
-    "library(ggplot2) # Basic scatter plot ggplot(mtcars, aes(x=wt, y=mpg)) +  geom_point() # Change the point size, and shape ggplot(mtcars, aes(x=wt, ...",
-    "STHDA",
-    "http://www.sthda.com/sthda/RDoc/figure/ggplot2/ggplot2-scatter-plot-basic-graph-data-visualization-2.png",
-    "http://www.sthda.com/english/wiki/ggplot2-scatter-plots-quick-start-guide-r-software-and-data-visualization"
-]

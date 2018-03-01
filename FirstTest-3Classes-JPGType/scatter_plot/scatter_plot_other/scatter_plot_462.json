@@ -1,9 +1,0 @@
-[
-    "google",
-    "scatter_plot",
-    "Scatter Plots and Constellation Diagrams - MATLAB & Simulink",
-    "Alternately, you can use comm.ConstellationDiagram , specifying the number  of samples per symbol, and if needed the timing offset. Also, using comm.",
-    "MathWorks",
-    "https://www.mathworks.com/help/examples/comm/win64/ViewSignalsUsingConstellationDiagramsExample_01.png",
-    "https://www.mathworks.com/help/comm/ug/scatter-plots.html"
-]

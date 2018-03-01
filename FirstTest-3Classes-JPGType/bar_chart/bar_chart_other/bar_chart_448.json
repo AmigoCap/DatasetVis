@@ -1,9 +1,0 @@
-[
-    "google",
-    "bar_chart",
-    "D3 Simple Bar Chart",
-    "It renders a bar chart for concatenated attributes and the first metric in  the report grid. It is very similar to the Google Chart sample.",
-    "SDK - MicroStrategy",
-    "https://lw.microstrategy.com/msdz/MSDL/GARelease_Current/docs/projects/VisSDK/content/images/VI_D3barChart_small.png",
-    "https://lw.microstrategy.com/msdz/MSDL/GARelease_Current/docs/projects/VisSDK/content/topics/HTML5/SampleCode_D3SimpleBarChart.htm"
-]

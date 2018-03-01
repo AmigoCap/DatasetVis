@@ -1,9 +1,0 @@
-[
-    "google",
-    "scatter_plot",
-    "R Graphical Manual",
-    "... scatter.plot(mee,byPair=list(probe=c(\"cg19403323\"),gene=c(\"ID255928\")),  + category=\"TN\", save=FALSE,lm_line=TRUE) > > > > > > dev.off() null device  1 >",
-    "R Graphical Manual",
-    "http://www.imsbio.co.jp/RGM-files/R_BC/result/ELMER/scatter.plot.Rd_001_large.png",
-    "http://www.imsbio.co.jp/RGM/R_rdfile?f=ELMER/man/scatter.plot.Rd&d=R_BC"
-]

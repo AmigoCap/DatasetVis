@@ -1,9 +1,0 @@
-[
-    "google",
-    "scatter_plot",
-    "Grouping Data for a 3d Scatter Plot - MATLAB Answers - MATLAB Central",
-    "... [A1; A2; A3]; % All Groups cm = [1 0 0; 0 1 0; 1 0 1]; % Colour  Definitions C = [repmat(cm(1,:), size(A1,1), 1); repmat(cm(2,:),  size(A2,1), ...",
-    "MathWorks",
-    "https://www.mathworks.com/matlabcentral/answers/uploaded_files/33103/Grouping%20Data%20for%20a%203d%20Scatter%20Plot%20-%202015%2006%2024.png",
-    "https://www.mathworks.com/matlabcentral/answers/225193-grouping-data-for-a-3d-scatter-plot"
-]
