@@ -45,4 +45,4 @@ def resize_dataset(folderPath, height, width):
         if image.split('.')[len(image.split('x'))] == 'png' or image.split('.')[len(image.split('x'))] == 'jpg' or image.split('.')[len(image.split('x'))] == 'jpeg':
             if not resize_image(folderPath, image, height, width):
                 print(image + ' no success on resize')
-    bd.buildDataSet('data/*.jpg')
+    bd.buildDataSet('data/*.jpg', height)

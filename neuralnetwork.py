@@ -16,80 +16,78 @@ from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
 import pickle
 
-# Load the data set
-with open("dataset.pkl", "rb") as f:
+def neuralNetwork(size):
+    # Load the data set
+    with open("dataset.pkl", "rb") as f:
+        u = pickle._Unpickler(f)
+        u.encoding = 'latin1'
 
-    u = pickle._Unpickler(f)
-    u.encoding = 'latin1'
+        X, Y, X_test, Y_test = u.load()
 
-    X, Y, X_test, Y_test = u.load()
+        print(Y)
 
-    print(Y)
+        X = X.astype('float32')
+        X_test = X_test.astype('float32')
 
-    X = X.astype('float32')
-    X_test = X_test.astype('float32')
+    # Shuffle the data
+    X, Y = shuffle(X, Y)
 
+    # Make sure the data is normalized
+    img_prep = ImagePreprocessing()
+    img_prep.add_featurewise_zero_center()
+    img_prep.add_featurewise_stdnorm()
 
+    # Create extra synthetic training data by flipping, rotating and blurring the
+    # images on our data set.
+    img_aug = ImageAugmentation()
+    img_aug.add_random_flip_leftright()
+    img_aug.add_random_rotation(max_angle=25.)
+    img_aug.add_random_blur(sigma_max=3.)
 
-# Shuffle the data
-X, Y = shuffle(X, Y)
+    # Define our network architecture:
 
-# Make sure the data is normalized
-img_prep = ImagePreprocessing()
-img_prep.add_featurewise_zero_center()
-img_prep.add_featurewise_stdnorm()
+    # Input is a 32x32 image with 3 color channels (red, green and blue)
+    network = input_data(shape=[None, size, size, 3],
+                         data_preprocessing=img_prep,
+                         data_augmentation=img_aug)
 
-# Create extra synthetic training data by flipping, rotating and blurring the
-# images on our data set.
-img_aug = ImageAugmentation()
-img_aug.add_random_flip_leftright()
-img_aug.add_random_rotation(max_angle=25.)
-img_aug.add_random_blur(sigma_max=3.)
+    # Step 1: Convolution
+    network = conv_2d(network, size, 3, activation='relu')
 
-# Define our network architecture:
+    # Step 2: Max pooling
+    network = max_pool_2d(network, 2)
 
-# Input is a 32x32 image with 3 color channels (red, green and blue)
-network = input_data(shape=[None, 128, 128, 3],
-                     data_preprocessing=img_prep,
-                     data_augmentation=img_aug)
+    # Step 3: Convolution again
+    network = conv_2d(network, size*4, 3, activation='relu')
 
-# Step 1: Convolution
-network = conv_2d(network, 128, 3, activation='relu')
+    # Step 4: Convolution yet again
+    network = conv_2d(network, size*4, 3, activation='relu')
 
-# Step 2: Max pooling
-network = max_pool_2d(network, 2)
+    # Step 5: Max pooling again
+    network = max_pool_2d(network, 2)
 
-# Step 3: Convolution again
-network = conv_2d(network, 512, 3, activation='relu')
+    # Step 6: Fully-connected 512 node neural network
+    network = fully_connected(network, size*16, activation='relu')
 
-# Step 4: Convolution yet again
-network = conv_2d(network, 512, 3, activation='relu')
+    # Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
+    network = dropout(network, 0.5)
 
-# Step 5: Max pooling again
-network = max_pool_2d(network, 2)
+    # Step 8: Fully-connected neural network with two outputs (0=isn't a bird, 1=is a bird) to make the final prediction
+    network = fully_connected(network, 3, activation='softmax')
 
-# Step 6: Fully-connected 512 node neural network
-network = fully_connected(network, 2048, activation='relu')
+    # Tell tflearn how we want to train the network
+    network = regression(network, optimizer='adam',
+                         loss='categorical_crossentropy',
+                         learning_rate=0.001)
 
-# Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
-network = dropout(network, 0.5)
+    # Wrap the network in a model object
+    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
 
-# Step 8: Fully-connected neural network with two outputs (0=isn't a bird, 1=is a bird) to make the final prediction
-network = fully_connected(network, 3, activation='softmax')
-
-# Tell tflearn how we want to train the network
-network = regression(network, optimizer='adam',
-                     loss='categorical_crossentropy',
-                     learning_rate=0.001)
-
-# Wrap the network in a model object
-model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
-
-# Train it! We'll do 100 training passes and monitor it as it goes.
-model.fit(X, Y, n_epoch=40, shuffle=True, validation_set=(X_test, Y_test),
-          show_metric=True, batch_size=1,
-          snapshot_epoch=True,
-          run_id='dataviz-classifier')
-# Save model when training is complete to a file
-model.save("dataviz-classifier.tfl")
-print("Network trained and saved as dataviz-classifier.tfl!")
+    # Train it! We'll do 100 training passes and monitor it as it goes.
+    model.fit(X, Y, n_epoch=20, shuffle=True, validation_set=(X_test, Y_test),
+              show_metric=True, batch_size=1,
+              snapshot_epoch=True,
+              run_id='dataviz-classifier')
+    # Save model when training is complete to a file
+    model.save("dataviz-classifier.tfl")
+    print("Network trained and saved as dataviz-classifier.tfl!")

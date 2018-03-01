@@ -11,6 +11,10 @@ import glob
 import numpy as np
 import argparse
 import loadData
+import pickle
+import cv2
+from random import shuffle
+
 
 '''parser = argparse.ArgumentParser(description='Decide if an image is a picture of a bird')
 parser.add_argument('image', type=str, help='The image image file to check')
@@ -31,32 +35,54 @@ network = input_data(shape=[None, 32, 32, 3],
                      data_augmentation=img_aug)
 network = conv_2d(network, 32, 3, activation='relu')
 network = max_pool_2d(network, 2)
-network = conv_2d(network, 64, 3, activation='relu')
-network = conv_2d(network, 64, 3, activation='relu')
+network = conv_2d(network, 128, 3, activation='relu')
+network = conv_2d(network, 128, 3, activation='relu')
 network = max_pool_2d(network, 2)
 network = fully_connected(network, 512, activation='relu')
 network = dropout(network, 0.5)
-network = fully_connected(network, 2, activation='softmax')
+network = fully_connected(network, 3, activation='softmax')
 network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
                      learning_rate=0.001)
 
 model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
-model.load("./dataviz-classifier.tfl.ckpt-560")
+model.load("./dataviz-classifier.tfl.ckpt-8160")
+shuffle_data = True
 
+#Load the training dataset
+with open("dataset.pkl", "rb") as f:
+    a,b,c,d, = pickle.load(f)
+
+#Get a list of my testing images paths
 addrs = glob.glob("./test/*.jpg")
-
-for addr in addrs:
+labels = [[1,0,0] if 'line' in addr else [0,1,0] if 'bar' in addr else [0,0,1] for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+tp=0
+print(labels)
+for index,addr in enumerate(addrs):
 # Scale it to 32x32
     print(addr)
-    img = loadData.resize_image(addr,32,32).astype(np.float32, casting='unsafe')
+    print(labels[index])
+    img = cv2.imread(addr).astype(np.float32, casting='unsafe')
 # Predict
     prediction = model.predict([img])
     print(prediction[0])
 # Check the result.
-    is_bird = np.argmax(prediction[0]) == 1
+    is_line = np.argmax(prediction[0]) == 0
+    is_bar = np.argmax(prediction[0]) == 1
 
-    if is_bird:
-        print("That's a Pie")
+    if np.argmax(labels[index]) == np.argmax(prediction[0]):
+        print("True positive")
+        tp +=1
+
+    if is_line:
+        print("That's a Line Chart")
     else:
-        print("That's not a Pie")
+        if is_bar:
+            print("That's a Bar Chart")
+        else :
+            print("That's a Scatterplot Plot")
+
+
+print(tp)
+print(len(addrs))
+#odel.evaluate(e,f,batch_size=1)
