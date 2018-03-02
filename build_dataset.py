@@ -8,7 +8,8 @@ import shutil
 import os
 import neuralnetwork as nn
 
-def buildDataSet(path, size):
+
+def buildDataSet(path):
     #Building an images dataset with 3 classes : Line chart Bar chart, Scatter plot
     shuffle_data = True
 
@@ -34,6 +35,10 @@ def buildDataSet(path, size):
         addrs, labels = zip(*c)
 
     test_addrs = addrs[0:int(offset_test*len(addrs))]
+
+    if os.path.isdir('./test'):
+        shutil.rmtree('./test')
+    os.makedirs('./test')
 
     dst_dir = "./test"
     for jpgfile in test_addrs:
@@ -105,7 +110,7 @@ def buildDataSet(path, size):
         #train_set, valid_set, test_set = pickle.load(f)
         pickle.dump((X_train,Y_train,X_val_resized,Y_val_resized),f)
 
-    nn.neuralNetwork(size)
+    nn.neuralNetwork()
 
     '''with open("dataset.pkl", "rb") as f:
         a,b,c,d = pickle.load(f)'''

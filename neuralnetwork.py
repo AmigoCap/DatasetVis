@@ -7,6 +7,7 @@ https://github.com/tflearn/tflearn/blob/master/examples/images/convnet_cifar10.p
 from __future__ import division, print_function, absolute_import
 
 # Import tflearn and some helpers
+import shutil
 import tflearn
 from tflearn.data_utils import shuffle
 from tflearn.layers.core import input_data, dropout, fully_connected
@@ -16,7 +17,13 @@ from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
 import pickle
 
-def neuralNetwork(size):
+import settings
+import os
+
+
+def neuralNetwork():
+    size = settings.size
+
     # Load the data set
     with open("dataset.pkl", "rb") as f:
         u = pickle._Unpickler(f)
@@ -80,14 +87,20 @@ def neuralNetwork(size):
                          loss='categorical_crossentropy',
                          learning_rate=0.001)
 
+    if os.path.isdir('data-classifier'):
+        shutil.rmtree('data-classifier')
+
+    os.makedirs('data-classifier')
+
     # Wrap the network in a model object
-    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
+    # model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
+    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='data-classifier/result')
 
     # Train it! We'll do 100 training passes and monitor it as it goes.
-    model.fit(X, Y, n_epoch=20, shuffle=True, validation_set=(X_test, Y_test),
+    model.fit(X, Y, n_epoch=5, shuffle=True, validation_set=(X_test, Y_test),
               show_metric=True, batch_size=1,
               snapshot_epoch=True,
               run_id='dataviz-classifier')
     # Save model when training is complete to a file
-    model.save("dataviz-classifier.tfl")
+    model.save("data-classifier/dataviz-classifier.tfl")
     print("Network trained and saved as dataviz-classifier.tfl!")
