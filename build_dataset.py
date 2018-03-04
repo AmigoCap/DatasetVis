@@ -7,7 +7,7 @@ import cv2
 import shutil
 import os
 import neuralnetwork as nn
-
+import settings
 
 def buildDataSet(path):
     #Building an images dataset with 3 classes : Line chart Bar chart, Scatter plot
@@ -15,8 +15,16 @@ def buildDataSet(path):
 
     #Contains images of 3 classes : Line Chart, Bar Chart, Scatter Chart
     #train_path = "./dataset/train-validation/*.jpg"
-    offset_test = 0.1
-    offset_train_val = 0.7
+    offset_test = settings.offset_test
+    offset_train_val = settings.offset_train_val
+
+    print("######## Dividing our resized dataset in two parts #######")
+    print("Test : "+str(offset_test*100)+" %")
+    print("Train-validation : "+str((1-offset_test)*100)+" %")
+    print("######## Dividing train-validation dataset in two parts #######")
+    print("Train : "+str((offset_train_val)*100)+" %")
+    print("Validation : "+str(int((1-offset_train_val)*100))+" %")
+
     X = []
     X_val = []
     Y = []
@@ -95,11 +103,7 @@ def buildDataSet(path):
     X_train = np.asarray(X,dtype='float32')
     X_val_resized = np.asarray(X_val,dtype='float32')
 
-    print(X_train)
-    print(Y_train)
-    print(X_val_resized)
-    print(Y_val_resized)
-
+    print("######## Pickling Arrays objects for training and testing our CNN model ######")
     print(X_train.shape)
     print(Y_train.shape)
     print(X_val_resized.shape)
@@ -111,6 +115,3 @@ def buildDataSet(path):
         pickle.dump((X_train,Y_train,X_val_resized,Y_val_resized),f)
 
     nn.neuralNetwork()
-
-    '''with open("dataset.pkl", "rb") as f:
-        a,b,c,d = pickle.load(f)'''

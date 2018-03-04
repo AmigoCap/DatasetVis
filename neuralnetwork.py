@@ -16,6 +16,11 @@ from tflearn.layers.estimator import regression
 from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
 import pickle
+import glob
+import numpy as np
+import argparse
+import loadData
+import cv2
 
 import settings
 import os
@@ -29,11 +34,7 @@ def neuralNetwork():
     with open("dataset.pkl", "rb") as f:
         u = pickle._Unpickler(f)
         u.encoding = 'latin1'
-
         X, Y, X_test, Y_test = u.load()
-
-        print(Y)
-
         X = X.astype('float32')
         X_test = X_test.astype('float32')
 
@@ -66,10 +67,10 @@ def neuralNetwork():
     network = max_pool_2d(network, 2)
 
     # Step 3: Convolution again
-    network = conv_2d(network, size*4, 3, activation='relu')
+    network = conv_2d(network, size*2, 3, activation='relu')
 
     # Step 4: Convolution yet again
-    network = conv_2d(network, size*4, 3, activation='relu')
+    network = conv_2d(network, size*2, 3, activation='relu')
 
     # Step 5: Max pooling again
     network = max_pool_2d(network, 2)
@@ -80,13 +81,13 @@ def neuralNetwork():
     # Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
     network = dropout(network, 0.5)
 
-    # Step 8: Fully-connected neural network with two outputs (0=isn't a bird, 1=is a bird) to make the final prediction
+    # Step 8: Fully-connected neural network with three outputs (0=isn't a bird, 1=is a bird) to make the final prediction
     network = fully_connected(network, 3, activation='softmax')
 
     # Tell tflearn how we want to train the network
     network = regression(network, optimizer='adam',
                          loss='categorical_crossentropy',
-                         learning_rate=0.001)
+                         learning_rate=settings.learning_rate)
 
     if os.path.isdir('data-classifier'):
         shutil.rmtree('data-classifier')
@@ -95,15 +96,61 @@ def neuralNetwork():
 
     # Wrap the network in a model object
     # model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
-    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='data-classifier/dataviz-classifier.tfl.ckpt')
+    model = tflearn.DNN(network, tensorboard_verbose=0)#, checkpoint_path='data-classifier/dataviz-classifier.tfl.ckpt')
 
     # Train it! We'll do 100 training passes and monitor it as it goes.
     model.fit(X, Y, n_epoch=settings.nb_epoch, shuffle=True, validation_set=(X_test, Y_test),
-              show_metric=True, batch_size=1,
+              show_metric=True, batch_size=settings.batch_size,
               snapshot_epoch=True,
               run_id='dataviz-classifier')
     # Save model when training is complete to a file
     model.save("data-classifier/dataviz-classifier.tfl")
     print("Network trained and saved as dataviz-classifier.tfl!")
 
-    pr.prediction()
+    # Get a list of my testing images paths
+    addrs = glob.glob("./test/*.jpg")
+    labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+
+    tp = 0
+    label_predicted = []
+    paths_images_wrong = []
+
+    for index, addr in enumerate(addrs):
+         # Scale it to 32x32
+         #print(addr)
+         img = cv2.imread(addr).astype(np.float32, casting='unsafe')
+         # Predict
+         prediction = model.predict([img])
+         label_predicted.append(np.argmax(prediction[0]))
+         # Check the result.
+         is_line = np.argmax(prediction[0]) == 0
+         is_bar = np.argmax(prediction[0]) == 1
+
+         '''if is_line:
+             print("That's a Line Chart")
+         else:
+             if is_bar:
+                 print("That's a Bar Chart")
+             else:
+                 print("That's a Scatterplot Plot")'''
+
+         if labels[index] == np.argmax(prediction[0]):
+            #print("True positive")
+            tp += 1
+         else:
+            paths_images_wrong.append(addrs[index])
+
+        print(paths_images_wrong)
+
+
+    size = max(labels + label_predicted)
+    confusion = np.zeros((size+1,size+1))
+
+    if len(labels) != len(label_predicted):
+    	print("Erreur de taille")
+    else:
+    	for i in range(len(labels)):
+    		confusion[labels[i],label_predicted[i]] += 1
+
+    print("The confusion matrix is : ")
+    print(confusion)

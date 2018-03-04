@@ -45,6 +45,7 @@ def resize_dataset():
     height = settings.size
     width = settings.size
     images = [f for f in os.listdir(folderPath) if isfile(join(folderPath, f))]
+    print("########### Resizing all the dataset images to " +str(height)+" x "+str(height)+ " in format .jpg #########")
     for i, image in enumerate(images):
         if image.split('.')[len(image.split('x'))] == 'png' or image.split('.')[len(image.split('x'))] == 'jpg' or image.split('.')[len(image.split('x'))] == 'jpeg':
             if not resize_image(folderPath, image, height, width):

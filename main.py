@@ -10,10 +10,3 @@ if os.path.isdir('data'):
     shutil.rmtree('data')
 
 ld.resize_dataset()
-
-
-# Retrieve dataset folder path
-# folderPath = sys.argv[1]
-
-# Retrieve size
-# size = int(sys.argv[2])
