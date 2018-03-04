@@ -2,6 +2,7 @@
 from __future__ import division, print_function, absolute_import
 
 import tflearn
+from os.path import isfile, join
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.estimator import regression
@@ -14,75 +15,87 @@ import loadData
 import pickle
 import cv2
 from random import shuffle
+import settings
+import os
 
 
-'''parser = argparse.ArgumentParser(description='Decide if an image is a picture of a bird')
-parser.add_argument('image', type=str, help='The image image file to check')
-args = parser.parse_args()'''
+def prediction():
+    size = settings.size
+    results = [f for f in os.listdir('data-classifier') if isfile(join('data-classifier', f))]
+    count = 0
+    for result in results:
+        if len(result.split('-')) > 2 and result.split('-')[1]  == 'classifier.tfl.ckpt':
+            if int(result.split('-')[2].split('.')[0]) > count:
+                count = int(result.split('-')[2].split('.')[0])
 
+    '''parser = argparse.ArgumentParser(description='Decide if an image is a picture of a bird')
+    parser.add_argument('image', type=str, help='The image image file to check')
+    args = parser.parse_args()'''
 
-# Same network definition as before
-img_prep = ImagePreprocessing()
-img_prep.add_featurewise_zero_center()
-img_prep.add_featurewise_stdnorm()
-img_aug = ImageAugmentation()
-img_aug.add_random_flip_leftright()
-img_aug.add_random_rotation(max_angle=25.)
-img_aug.add_random_blur(sigma_max=3.)
+    # Same network definition as before
+    img_prep = ImagePreprocessing()
+    img_prep.add_featurewise_zero_center()
+    img_prep.add_featurewise_stdnorm()
+    img_aug = ImageAugmentation()
+    img_aug.add_random_flip_leftright()
+    img_aug.add_random_rotation(max_angle=25.)
+    img_aug.add_random_blur(sigma_max=3.)
 
-network = input_data(shape=[None, 32, 32, 3],
-                     data_preprocessing=img_prep,
-                     data_augmentation=img_aug)
-network = conv_2d(network, 32, 3, activation='relu')
-network = max_pool_2d(network, 2)
-network = conv_2d(network, 128, 3, activation='relu')
-network = conv_2d(network, 128, 3, activation='relu')
-network = max_pool_2d(network, 2)
-network = fully_connected(network, 512, activation='relu')
-network = dropout(network, 0.5)
-network = fully_connected(network, 3, activation='softmax')
-network = regression(network, optimizer='adam',
-                     loss='categorical_crossentropy',
-                     learning_rate=0.001)
+    network = input_data(shape=[None, size, size, 3],
+                         data_preprocessing=img_prep,
+                         data_augmentation=img_aug)
+    network = conv_2d(network, size, 3, activation='relu')
+    network = max_pool_2d(network, 2)
+    network = conv_2d(network, size*4, 3, activation='relu')
+    network = conv_2d(network, size*4, 3, activation='relu')
+    network = max_pool_2d(network, 2)
+    network = fully_connected(network, size*16, activation='relu')
+    network = dropout(network, 0.5)
+    network = fully_connected(network, 3, activation='softmax')
+    network = regression(network, optimizer='adam',
+                         loss='categorical_crossentropy',
+                         learning_rate=0.001)
 
-model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
-model.load("./dataviz-classifier.tfl.ckpt-8160")
-shuffle_data = True
-
-#Load the training dataset
-with open("dataset.pkl", "rb") as f:
-    a,b,c,d, = pickle.load(f)
-
-#Get a list of my testing images paths
-addrs = glob.glob("./test/*.jpg")
-labels = [[1,0,0] if 'line' in addr else [0,1,0] if 'bar' in addr else [0,0,1] for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
-tp=0
-print(labels)
-for index,addr in enumerate(addrs):
-# Scale it to 32x32
-    print(addr)
-    print(labels[index])
-    img = cv2.imread(addr).astype(np.float32, casting='unsafe')
-# Predict
-    prediction = model.predict([img])
-    print(prediction[0])
-# Check the result.
-    is_line = np.argmax(prediction[0]) == 0
-    is_bar = np.argmax(prediction[0]) == 1
-
-    if np.argmax(labels[index]) == np.argmax(prediction[0]):
-        print("True positive")
-        tp +=1
-
-    if is_line:
-        print("That's a Line Chart")
-    else:
-        if is_bar:
-            print("That's a Bar Chart")
-        else :
-            print("That's a Scatterplot Plot")
-
-
-print(tp)
-print(len(addrs))
-#odel.evaluate(e,f,batch_size=1)
+    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='data-classifier/dataviz-classifier.tfl.ckpt')
+    print("'./data-classifier/dataviz-classifier.tfl.ckpt-" + str(count))
+    model.load("./data-classifier/dataviz-classifier.tfl.ckpt-408")
+    # model.load("./data-classifier/dataviz-classifier.tfl.ckpt-" + str(count))
+    # shuffle_data = True
+    #
+    # # Load the training dataset
+    # with open("dataset.pkl", "rb") as f:
+    #     a, b, c, d, = pickle.load(f)
+    #
+    # # Get a list of my testing images paths
+    # addrs = glob.glob("./test/*.jpg")
+    # labels = [[1, 0, 0] if 'line' in addr else [0, 1, 0] if 'bar' in addr else [0, 0, 1] for addr in
+    #           addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    # tp = 0
+    # print(labels)
+    # for index, addr in enumerate(addrs):
+    #     # Scale it to 32x32
+    #     print(addr)
+    #     print(labels[index])
+    #     img = cv2.imread(addr).astype(np.float32, casting='unsafe')
+    #     # Predict
+    #     prediction = model.predict([img])
+    #     print(prediction[0])
+    #     # Check the result.
+    #     is_line = np.argmax(prediction[0]) == 0
+    #     is_bar = np.argmax(prediction[0]) == 1
+    #
+    #     if np.argmax(labels[index]) == np.argmax(prediction[0]):
+    #         print("True positive")
+    #         tp += 1
+    #
+    #     if is_line:
+    #         print("That's a Line Chart")
+    #     else:
+    #         if is_bar:
+    #             print("That's a Bar Chart")
+    #         else:
+    #             print("That's a Scatterplot Plot")
+    #
+    # print(tp)
+    # print(len(addrs))
+    # # odel.evaluate(e,f,batch_size=1)

@@ -1,4 +1,3 @@
 databasePath = '../Dataset'
 size = 32
-
-final_count = 0
+nb_epoch = 1

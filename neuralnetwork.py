@@ -19,6 +19,7 @@ import pickle
 
 import settings
 import os
+import prediction as pr
 
 
 def neuralNetwork():
@@ -94,13 +95,15 @@ def neuralNetwork():
 
     # Wrap the network in a model object
     # model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
-    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='data-classifier/result')
+    model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='data-classifier/dataviz-classifier.tfl.ckpt')
 
     # Train it! We'll do 100 training passes and monitor it as it goes.
-    model.fit(X, Y, n_epoch=5, shuffle=True, validation_set=(X_test, Y_test),
+    model.fit(X, Y, n_epoch=settings.nb_epoch, shuffle=True, validation_set=(X_test, Y_test),
               show_metric=True, batch_size=1,
               snapshot_epoch=True,
               run_id='dataviz-classifier')
     # Save model when training is complete to a file
     model.save("data-classifier/dataviz-classifier.tfl")
     print("Network trained and saved as dataviz-classifier.tfl!")
+
+    pr.prediction()
