@@ -28,6 +28,8 @@ import prediction as pr
 
 
 def neuralNetwork():
+    from tensorflow.python.framework import ops
+    ops.reset_default_graph()
     size = settings.size
 
     # Load the data set
@@ -67,10 +69,10 @@ def neuralNetwork():
     network = max_pool_2d(network, 2)
 
     # Step 3: Convolution again
-    network = conv_2d(network, size*2, 3, activation='relu')
+    network = conv_2d(network, size*4, 3, activation='relu')
 
     # Step 4: Convolution yet again
-    network = conv_2d(network, size*2, 3, activation='relu')
+    network = conv_2d(network, size*4, 3, activation='relu')
 
     # Step 5: Max pooling again
     network = max_pool_2d(network, 2)
@@ -89,10 +91,10 @@ def neuralNetwork():
                          loss='categorical_crossentropy',
                          learning_rate=settings.learning_rate)
 
-    if os.path.isdir('data-classifier'):
+    '''if os.path.isdir('data-classifier'):
         shutil.rmtree('data-classifier')
 
-    os.makedirs('data-classifier')
+    os.makedirs('data-classifier')'''
 
     # Wrap the network in a model object
     # model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
@@ -101,12 +103,14 @@ def neuralNetwork():
     # Train it! We'll do 100 training passes and monitor it as it goes.
     model.fit(X, Y, n_epoch=settings.nb_epoch, shuffle=True, validation_set=(X_test, Y_test),
               show_metric=True, batch_size=settings.batch_size,
-              snapshot_epoch=True,
-              run_id='dataviz-classifier')
+              snapshot_epoch=True)
+              #run_id='dataviz-classifier')
     # Save model when training is complete to a file
-    model.save("data-classifier/dataviz-classifier.tfl")
+    model.save("dataviz-classifier.tfl")
+    pr.prediction()
     print("Network trained and saved as dataviz-classifier.tfl!")
 
+    '''
     # Get a list of my testing images paths
     addrs = glob.glob("./test/*.jpg")
     labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
@@ -126,13 +130,13 @@ def neuralNetwork():
          is_line = np.argmax(prediction[0]) == 0
          is_bar = np.argmax(prediction[0]) == 1
 
-         '''if is_line:
+         ''''''if is_line:
              print("That's a Line Chart")
          else:
              if is_bar:
                  print("That's a Bar Chart")
              else:
-                 print("That's a Scatterplot Plot")'''
+                 print("That's a Scatterplot Plot")
 
          if labels[index] == np.argmax(prediction[0]):
             #print("True positive")
@@ -153,4 +157,4 @@ def neuralNetwork():
     		confusion[labels[i],label_predicted[i]] += 1
 
     print("The confusion matrix is : ")
-    print(confusion)
+    print(confusion)'''
