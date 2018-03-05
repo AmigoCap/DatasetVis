@@ -21,6 +21,12 @@ Dans le fichier <b>settings.py</b> il vous est possible de <b>modifier les diff�
  
 ## Lancement
 
+Afin d'installer l'ensemble des packages nécessaires au fonctionnement du script, installer le module pip ([Page officielle](https://pypi.python.org/pypi/pip))  et exécuter la commande suivante :  
+
+```
+pip3 install -r requirements.txt
+```
+
 Dans le terminal, placez vous dans le dossier que vous venez de clôner.
 Pour lancer le script, tapez :
 ```
