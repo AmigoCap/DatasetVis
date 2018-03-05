@@ -2,14 +2,14 @@
 
 ## Le projet
 
-<p>Ce répertoire permet à partir d'une base de données d'images contenant 3 classes différentes d'entraîner un modèle de réseaux de neurones convolutionnels et de le tester sur une base test.
+Ce répertoire permet à partir d'une base de données d'images contenant 3 classes différentes d'entraîner un modèle de réseaux de neurones convolutionnels et de le tester sur une base test.
 À partir d'une base de données contenant 3 classes d'images de tailles et de formats quelconques, on redimensionne chaque image à la taille sizexsize et on convertit en JPG. 
 On crée deux dossiers :
 - /data contient x% des images pour entraîner le réseau de neurones convolutionnels
 - /test contient (1-x)% des images pour tester le modèle finale enregistrée
 À partir du dossier /data, on sérialise nos images de 'train' & 'validation' ainsi que leur labels respectifs dans un fichier pkl. Celui-ci sera lu pour entraîner le réseau de neurones. À la fin de l'entraînement, qui peut être plus ou moins long suivant les paramètres que vous avez choisi, le modèle est enregistré.
 Il est ensuite utilisé automatiquement sur le dossier /test crée ultérieurement et en ressort une matrice de confusion.
-</p>
+
 
 Comme chaque variable intermédiaire est enregistrée (modèle CNN entraînée, dataset dans le fichier pkl, dossiers /data et /test) il est possible de les réutiliser sans réaliser toutes les étapes.
 
