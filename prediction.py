@@ -84,20 +84,12 @@ def prediction():
          is_line = np.argmax(prediction[0]) == 0
          is_bar = np.argmax(prediction[0]) == 1
 
-         if is_line:
-             print("That's a Line Chart")
-         else:
-             if is_bar:
-                 print("That's a Bar Chart")
-             else:
-                 print("That's a Scatterplot Plot")
-
          if labels[index] == np.argmax(prediction[0]):
              # print("True positive")
              tp += 1
          else:
              paths_images_wrong.append(addrs[index])
-
+    print('###### Ensemble des images mal classées :')         
     print(paths_images_wrong)
 
 
@@ -112,4 +104,3 @@ def prediction():
 
     print("The confusion matrix is : ")
     print(confusion)
-
