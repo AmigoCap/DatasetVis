@@ -64,9 +64,6 @@ de pointes. Par exemple, la squelettisation numérique de personne.
 
 **LES RESEAUX DE NEURONES** Non supervisé Multiclasse
 **_Principe :_** Les réseaux de neurones consistent en un réseau orienté composé de neurones artificiels organisés en couches.
-
-
-```
 Les neurones d’une couche donnée sont liés à tous les neurones de la couche précédente et de la couche suivante par des relations pondérées. De ces poids dépend
 le comportement du réseau, et leur adaptation au problème considéré et l’objectif de la phase d’apprentissage. Chaque neurone a une sortie qui est obtenue par
 l’application d’une fonction non linéaire de la somme pondérée des entrées, qui sont elles mêmes les sorties des neurones de la couche précédente. Afin de calculer
