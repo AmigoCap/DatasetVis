@@ -107,6 +107,7 @@ def neuralNetwork():
               #run_id='dataviz-classifier')
     # Save model when training is complete to a file
     model.save("dataviz-classifier.tfl")
+    print(model.evaluate(X,Y))
     pr.prediction()
     print("Network trained and saved as dataviz-classifier.tfl!")
 
