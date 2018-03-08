@@ -5,6 +5,8 @@ from os.path import isfile, join
 import build_dataset as bd
 import settings
 
+labels = []
+
 
 def loadImage(filePath):
     image = cv2.imread(filePath)
@@ -14,17 +16,28 @@ def loadImage(filePath):
 
 def resize_image(folderPath, fileName, final_height, final_width):
     image = loadImage(folderPath + '/' + fileName)
+
+    # Récupération des différents labels
+    label = ''
+    for i in range(0, len(fileName.split('_')) - 1):
+        label += fileName.split('_')[i]+'_'
+
+    label = label[:-1]
+
+    if label not in labels:
+        labels.append(label)
+
     height, width, channels = image.shape
     final_ratio = float(final_width) / final_height
     ratio = float(width / height)
     if ratio < final_ratio:
-        wanted_width = round(final_ratio*height)
+        wanted_width = round(final_ratio * height)
         border = int(wanted_width - width)
         blank_image = np.zeros((height, border, 3), np.uint8)
-        blank_image[:,:] = (255, 255, 255)
+        blank_image[:, :] = (255, 255, 255)
         final = np.concatenate((image, blank_image), axis=1)
     elif ratio > final_ratio:
-        wanted_height = round(width/final_ratio)
+        wanted_height = round(width / final_ratio)
         border = int(wanted_height - height)
         blank_image = np.zeros((border, width, 3), np.uint8)
         blank_image[:, :] = (255, 255, 255)
@@ -45,8 +58,10 @@ def resize_dataset():
     height = settings.size
     width = settings.size
     images = [f for f in os.listdir(folderPath) if isfile(join(folderPath, f))]
-    print("########### Resizing all the dataset images to " +str(height)+" x "+str(height)+ " in format .jpg #########")
+    print("########### Resizing all the dataset images to " + str(height) + " x " + str(
+        height) + " in format .jpg #########")
     for i, image in enumerate(images):
-        if image.split('.')[len(image.split('x'))] == 'png' or image.split('.')[len(image.split('x'))] == 'jpg' or image.split('.')[len(image.split('x'))] == 'jpeg':
+        if image.split('.')[len(image.split('x'))] == 'png' or image.split('.')[len(image.split('x'))] == 'jpg' or \
+                image.split('.')[len(image.split('x'))] == 'jpeg':
             if not resize_image(folderPath, image, height, width):
                 print(image + ' no success on resize')
