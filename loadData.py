@@ -23,6 +23,8 @@ def getLabel(filePath):
 
     return label[:-1]
 
+def getLabelsNumber():
+    return len(getLabels())
 
 def resize_image(folderPath, fileName, final_height, final_width):
     image = loadImage(folderPath + '/' + fileName)
