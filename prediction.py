@@ -25,16 +25,9 @@ def prediction():
     from tensorflow.python.framework import ops
     ops.reset_default_graph()
     size = settings.size
-    #results = [f for f in os.listdir('data-classifier') if isfile(join('data-classifier', f))]
-    count = 0
-    '''for result in results:
-        if len(result.split('-')) > 2 and result.split('-')[1]  == 'classifier.tfl.ckpt':
-            if int(result.split('-')[2].split('.')[0]) > count:
-                count = int(result.split('-')[2].split('.')[0])'''
+    nb_filter = settings.nb_filter
+    filter_size = settings.filter_size
 
-    '''parser = argparse.ArgumentParser(description='Decide if an image is a picture of a bird')
-    parser.add_argument('image', type=str, help='The image image file to check')
-    args = parser.parse_args()'''
 
     # Same network definition as before
     img_prep = ImagePreprocessing()
@@ -48,12 +41,12 @@ def prediction():
     network = input_data(shape=[None, size, size, 3],
                          data_preprocessing=img_prep,
                          data_augmentation=img_aug)
-    network = conv_2d(network, size, 3, activation='relu')
+    network = conv_2d(network, nb_filter, filter_size, activation='relu')
     network = max_pool_2d(network, 2)
-    network = conv_2d(network, size*4, 3, activation='relu')
-    network = conv_2d(network, size*4, 3, activation='relu')
+    network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
+    network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
     network = max_pool_2d(network, 2)
-    network = fully_connected(network, size*16, activation='relu')
+    network = fully_connected(network, nb_filter*16, activation='relu')
     network = dropout(network, 0.5)
     network = fully_connected(network, 3, activation='softmax')
     network = regression(network, optimizer='adam',
@@ -89,7 +82,7 @@ def prediction():
              tp += 1
          else:
              paths_images_wrong.append(addrs[index])
-    print('###### Ensemble des images mal classées :')         
+    print('###### Ensemble des images mal classées :')
     print(paths_images_wrong)
 
 

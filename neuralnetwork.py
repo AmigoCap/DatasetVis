@@ -31,6 +31,9 @@ def neuralNetwork():
     from tensorflow.python.framework import ops
     ops.reset_default_graph()
     size = settings.size
+    nb_filter = settings.nb_filter
+    filter_size = settings.filter_size
+
 
     # Load the data set
     with open("dataset.pkl", "rb") as f:
@@ -63,22 +66,22 @@ def neuralNetwork():
                          data_augmentation=img_aug)
 
     # Step 1: Convolution
-    network = conv_2d(network, size, 3, activation='relu')
+    network = conv_2d(network, nb_filter, filter_size, activation='relu')
 
     # Step 2: Max pooling
     network = max_pool_2d(network, 2)
 
     # Step 3: Convolution again
-    network = conv_2d(network, size*4, 3, activation='relu')
+    network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
 
     # Step 4: Convolution yet again
-    network = conv_2d(network, size*4, 3, activation='relu')
+    network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
 
     # Step 5: Max pooling again
     network = max_pool_2d(network, 2)
 
     # Step 6: Fully-connected 512 node neural network
-    network = fully_connected(network, size*16, activation='relu')
+    network = fully_connected(network, nb_filter*16, activation='relu')
 
     # Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
     network = dropout(network, 0.5)
@@ -91,10 +94,6 @@ def neuralNetwork():
                          loss='categorical_crossentropy',
                          learning_rate=settings.learning_rate)
 
-    '''if os.path.isdir('data-classifier'):
-        shutil.rmtree('data-classifier')
-
-    os.makedirs('data-classifier')'''
 
     # Wrap the network in a model object
     # model = tflearn.DNN(network, tensorboard_verbose=0, checkpoint_path='dataviz-classifier.tfl.ckpt')
@@ -110,52 +109,3 @@ def neuralNetwork():
     print(model.evaluate(X,Y))
     pr.prediction()
     print("Network trained and saved as dataviz-classifier.tfl!")
-
-    '''
-    # Get a list of my testing images paths
-    addrs = glob.glob("./test/*.jpg")
-    labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
-
-    tp = 0
-    label_predicted = []
-    paths_images_wrong = []
-
-    for index, addr in enumerate(addrs):
-         # Scale it to 32x32
-         #print(addr)
-         img = cv2.imread(addr).astype(np.float32, casting='unsafe')
-         # Predict
-         prediction = model.predict([img])
-         label_predicted.append(np.argmax(prediction[0]))
-         # Check the result.
-         is_line = np.argmax(prediction[0]) == 0
-         is_bar = np.argmax(prediction[0]) == 1
-
-         ''''''if is_line:
-             print("That's a Line Chart")
-         else:
-             if is_bar:
-                 print("That's a Bar Chart")
-             else:
-                 print("That's a Scatterplot Plot")
-
-         if labels[index] == np.argmax(prediction[0]):
-            #print("True positive")
-            tp += 1
-         else:
-            paths_images_wrong.append(addrs[index])
-
-        print(paths_images_wrong)
-
-
-    size = max(labels + label_predicted)
-    confusion = np.zeros((size+1,size+1))
-
-    if len(labels) != len(label_predicted):
-    	print("Erreur de taille")
-    else:
-    	for i in range(len(labels)):
-    		confusion[labels[i],label_predicted[i]] += 1
-
-    print("The confusion matrix is : ")
-    print(confusion)'''
