@@ -14,7 +14,7 @@
 
 07 /03 **Script de scrapping :**
 
-```
+
 Le scrapping des charts se base sur un script qui récupère les résultats de google
 image pour une requête. Ce script est disponible sur le GitHub au nom de google-
 scrapper_2.0.py.
@@ -47,10 +47,10 @@ trois types de graphiques sur lesquelles nous allons nous concentrer :
 Les résultats se trouvent dans un dossier situé dans le répertoire du scrapper, dont le
 nom est « dataset ». Chaque sous-dossier de « dataset » correspond au résultat
 d’une requête.
-```
+
 07/03  **Nettoyage du jeu de donnée :**
 
-```
+
 Une fois les trois requêtes lancées et les dossiers de données brutes constituées, nous
 avons effectué une première phase de tri manuel avec comme objectif d’obtenir 230
 images propres et utilisables.
@@ -83,5 +83,5 @@ Critères spécifiques aux Scatter Plot :
 - Fond de cartes :
 
 Critères spécifiques aux Bar Chart :
-```
+
 **2. Classification**
