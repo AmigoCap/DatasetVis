@@ -15,3 +15,4 @@ learning_rate = 0.001
 
 nb_filter = 32
 filter_size = 3
+reseau = 3

@@ -4,7 +4,7 @@ from __future__ import division, print_function, absolute_import
 import tflearn
 from os.path import isfile, join
 from tflearn.layers.core import input_data, dropout, fully_connected
-from tflearn.layers.conv import conv_2d, max_pool_2d
+from tflearn.layers.conv import conv_2d, max_pool_2d, avg_pool_2d
 from tflearn.layers.estimator import regression
 from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
@@ -41,14 +41,78 @@ def prediction():
     network = input_data(shape=[None, size, size, 3],
                          data_preprocessing=img_prep,
                          data_augmentation=img_aug)
-    network = conv_2d(network, nb_filter, filter_size, activation='relu')
-    network = max_pool_2d(network, 2)
-    network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
-    network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
-    network = max_pool_2d(network, 2)
-    network = fully_connected(network, nb_filter*16, activation='relu')
-    network = dropout(network, 0.5)
-    network = fully_connected(network, 3, activation='softmax')
+
+    reseau = settings.reseau
+    if reseau == 1:
+        # Step 1: Convolution
+        network = conv_2d(network, nb_filter, filter_size, activation='relu')
+
+        # Step 2: Max pooling
+        network = max_pool_2d(network, 2)
+
+        # Step 3: Convolution again
+        network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
+
+        # Step 4: Convolution yet again
+        network = conv_2d(network, nb_filter*4, filter_size, activation='relu')
+
+        # Step 5: Max pooling again
+        network = max_pool_2d(network, 2)
+
+        # Step 6: Fully-connected 512 node neural network
+        network = fully_connected(network, nb_filter*16, activation='relu')
+
+        # Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
+        network = dropout(network, 0.5)
+        # Step 8: Fully-connected neural network with three outputs (0=isn't a bird, 1=is a bird) to make the final prediction
+
+        network = fully_connected(network, 3, activation='softmax')
+
+    elif reseau == 2:
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = max_pool_2d(network, 2)
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = max_pool_2d(network, 2)
+        network = fully_connected(network, 512, activation='relu')
+        network = fully_connected(network, 512, activation='relu')
+        network = fully_connected(network, 3, activation='softmax')
+
+    elif reseau == 3:
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = avg_pool_2d(network, 2)
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = avg_pool_2d(network, 2)
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = avg_pool_2d(network, 2)
+        network = fully_connected(network, 512, activation='relu')
+        network = fully_connected(network, 512, activation='relu')
+        network = dropout(network, 0.5)
+        network = fully_connected(network, 3, activation='softmax')
+
+    elif reseau == 4:
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 5, padding = 'valid', activation='relu')
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 5, padding='valid', activation='relu')
+        network = fully_connected(network, 512, activation='relu')
+        network = dropout(network, 0.5)
+        network = fully_connected(network, 3, activation='softmax')
+
+    elif reseau == 5:
+        network = conv_2d(network, 64, 3, activation='relu')
+        network = conv_2d(network, 64, 3, activation='relu')
+        network = avg_pool_2d(network, 2)
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = conv_2d(network, 32, 3, activation='relu')
+        network = max_pool_2d(network, 2)
+        network = fully_connected(network, 512, activation='relu')
+        network = fully_connected(network, 512, activation='relu')
+        network = fully_connected(network, 3, activation='softmax')
+
     network = regression(network, optimizer='adam',
                          loss='categorical_crossentropy',
                          learning_rate=settings.learning_rate)
