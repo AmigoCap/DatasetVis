@@ -22,6 +22,8 @@ probabilité a priori des classes et d'estimer la densité de probabilités des 
 **_Inconvénients :_** On est obligé de supposer que les variables prédictives ont des probabilités conditionnelles indépendantes.
 Exemple d’application : La classification naïve Bayésienne permet par exemple de déterminer si une personne est un homme ou une femme à partir de son poids et de ses mensurations à partir de données d’entraînement.
 
+**_Exemple d’application :_** Pour déterminer a partir d'un jeu de données de taille et de poids si une personne a davatange d'être un homme ou une femme
+
 **LES MACHINES A VECTEURS SUPPORTS** Non supervisé Binomial
 **_Principe :_** La méthode consiste à trouver un hyperplan optimal qui sépare les deux catégories. Cet hyperplan doit avoir la distance la plus faible possible avec chacune
 des catégories. Dans chaque catégorie, les points les plus proches de l’hyperplan sont appelés les vecteurs supports. L’espace entre les deux catégories est appelé la
@@ -42,8 +44,7 @@ La phase d’apprentissage consiste donc à trouver les bons tests pour classer 
 L’objectif est le suivant : les feuilles doivent être homogènes en ne contenant que les observations appartenant à une seule et même classe
 **_Avantages :_** Fonctionne sur des problèmes complexe (non-linéaire, multiclasse). Peu de préparation de données nécessaires.
 **_Inconvénients :_** Risque important de surapprentissage. Le critère du premier nœud influe énormément l’ensemble du modèle de prédiction
-**_Exemple d’application :_** Les arbres de décisions sont utilisés pour programmer les robots intelligents du jeu d’échec comme l’illustre l’arbre de décision ci-dessous :
-
+**_Exemple d’application :_** Les arbres de décisions sont utilisés pour programmer les robots intelligents du jeu d’échec.
 
 
 **LES FORÊTS ALEATOIRES** Supervisé Multiclasse
@@ -63,9 +64,9 @@ Les neurones d’une couche donnée sont liés à tous les neurones de la couche
 le comportement du réseau, et leur adaptation au problème considéré et l’objectif de la phase d’apprentissage. Chaque neurone a une sortie qui est obtenue par
 l’application d’une fonction non linéaire de la somme pondérée des entrées, qui sont elles mêmes les sorties des neurones de la couche précédente. Afin de calculer
 le vecteur poids pour chaque neurone, des algorithmes de rétropropagation ont été développés
-Avantages : Les réseaux de neurones permettent de traiter des problèmes de classification non linéaires complexes.
-Inconvénients : Le choix de la structure du réseau de neurone est compliqué. Il existe un risque de tomber dans un minimum local lors de l’apprentissage.
-Exemple d’application : Les réseaux de neurones sont par exemple utilisé dans la bourse pour identifier les tendances. Une explication est donnée par dans le papier
+**_Avantages :_** Les réseaux de neurones permettent de traiter des problèmes de classification non linéaires complexes.
+**_Inconvénients :_** Le choix de la structure du réseau de neurone est compliqué. Il existe un risque de tomber dans un minimum local lors de l’apprentissage.
+**_Exemple d'application :_** Les réseaux de neurones sont par exemple utilisé dans la bourse pour identifier les tendances. Une explication est donnée par dans le papier
 suivant : https://dumas.ccsd.cnrs.fr/dumas-01064660/document
 ```
 ## BIBLIOGRAPHIE :
