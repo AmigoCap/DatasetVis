@@ -2,30 +2,25 @@
 
 ## DEFINITION :
 
-**Classification :** Dans une classification, la variable cible est qualitative. Il s’agit de créer des catégories. Elle s’oppose en cela à la régression dont la variable
-
-cible est quantitative.
+**Classification :** Dans une classification, la variable cible est qualitative. Il s’agit de créer des catégories. Elle s’oppose en cela à la régression dont la variable cible est quantitative.
 
 **DETAIL DE L’ETAT DE L’ART**
 
-```
-Methode de classification Apprentissage supervisé ou non supervisé? Classification binomiale ou multiclasses?
-CLASSIFICATION NAIVE BAYESIENNE Supervisé Multiclasse
-Principe : La méthode considère le vecteur x des valeurs des variables prédictives comme une variable aléatoire dont la distribution dépend de la classe. La
-classification est réalisée à partir d’un classifieur bayésien qui est soumis à l’apprentissage. Le but de l’apprentissage pour le classifieur bayésien est d'estimer la
+
+Methode de classification 
+Apprentissage supervisé ou non supervisé? 
+Classification binomiale ou multiclasses?
+
+CLASSIFICATION NAIVE BAYESIENNE 
+Supervisé Multiclasse
+
+**_Principe :_** La méthode considère le vecteur x des valeurs des variables prédictives comme une variable aléatoire dont la distribution dépend de la classe. La classification est réalisée à partir d’un classifieur bayésien qui est soumis à l’apprentissage. Le but de l’apprentissage pour le classifieur bayésien est d'estimer la
 probabilité a priori des classes et d'estimer la densité de probabilités des classes.
-Avantages : L’efficacité et la simplicité de l’algorithme, et le peu de données nécessaires pour l’entrainer.
-Inconvénients : On est obligé de supposer que les variables prédictives ont des probabilités conditionnelles indépendantes.
-Exemple d’application : La classification naïve Bayésienne permet par exemple de déterminer si une personne est un homme ou une femme à partir de son poids et
-de ses mensurations à partir de données d’entraînement.
-Données d’entraineemnt.
-```
-```
-Personne à classifier :
-```
-```
-Après analyse on obtient que la postérieure féminin est supérieure à la postérieure masculin donc que l'échantillon est plus probablement de sexe féminin.
-```
+
+**_Avantages :_** L’efficacité et la simplicité de l’algorithme, et le peu de données nécessaires pour l’entrainer.
+
+**_Inconvénients :_** On est obligé de supposer que les variables prédictives ont des probabilités conditionnelles indépendantes.
+Exemple d’application : La classification naïve Bayésienne permet par exemple de déterminer si une personne est un homme ou une femme à partir de son poids et de ses mensurations à partir de données d’entraînement.
 
 **LES MACHINES A VECTEURS SUPPORTS** Non supervisé Binomial
 **_Principe :_** La méthode consiste à trouver un hyperplan optimal qui sépare les deux catégories. Cet hyperplan doit avoir la distance la plus faible possible avec chacune
