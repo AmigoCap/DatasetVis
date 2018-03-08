@@ -3,7 +3,7 @@
 ## 1. Etat de l’art des différents types de Data vizualisation**
 
 
-**1.1. Data vizualisation les plus utilisées
+**1.1. Data vizualisation les plus utilisées**
 
 Histogramme (bar chart & histogram)
 
@@ -24,7 +24,7 @@ diagrammes à bulles (bubble chart) représenté ci-dessous peuvent être consid
 catégorie des nuages de points.
 
 
-1.2. Etat de l’art (quasi) exhaustif des types de data vizualisation possible
+**1.2. Etat de l’art (quasi) exhaustif des types de data vizualisation possible**
 
 2 projets se sont proposés de faire une ontologie de l’ensemble des data vizualisations existantes.
 
