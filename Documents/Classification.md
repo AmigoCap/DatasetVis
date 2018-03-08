@@ -4,14 +4,14 @@
 
 **Classification :** Dans une classification, la variable cible est qualitative. Il s’agit de créer des catégories. Elle s’oppose en cela à la régression dont la variable cible est quantitative.
 
-**DETAIL DE L’ETAT DE L’ART**
+## DETAIL DE L’ETAT DE L’ART**
 
 
 Methode de classification 
 Apprentissage supervisé ou non supervisé? 
 Classification binomiale ou multiclasses?
 
-CLASSIFICATION NAIVE BAYESIENNE 
+**CLASSIFICATION NAIVE BAYESIENNE** 
 Supervisé Multiclasse
 
 **_Principe :_** La méthode considère le vecteur x des valeurs des variables prédictives comme une variable aléatoire dont la distribution dépend de la classe. La classification est réalisée à partir d’un classifieur bayésien qui est soumis à l’apprentissage. Le but de l’apprentissage pour le classifieur bayésien est d'estimer la
