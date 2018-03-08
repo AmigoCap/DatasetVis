@@ -1,7 +1,6 @@
 # Classification de Data Vizualisation : état de l’art
 
-## 1. Etat de l’art des différents types de Data vizualisation**
-
+## 1. Etat de l’art des différents types de Data vizualisation
 
 **1.1. Data vizualisation les plus utilisées**
 
@@ -135,7 +134,7 @@ Word Cloud^
 ## 2. Etat de l’art de l’existant en matière de classification de Data vizualisation**
 
 
-**2.1. Points généraux
+**2.1. Points généraux**
 
 Les étapes impliquées par les algorithmes de classification de diagramme sont généralement au
 nombre de 2 :
@@ -150,7 +149,7 @@ Les détails de fonctionnement sur ces algorithmes sont détaillés dans la spé
 de classification. Nous ferons ici le focus sur leur application pour les diagrammes.
 
 
-**2.2. Résultats expérimentaux
+**2.2. Résultats expérimentaux**
 
 L’expérience consiste à distinguer des Bar Chart, des line chart, des Doughnutchart, des Pie chart et
 d’autres diagrammes. Il existe des variations 2D ou 3D de chaque diagramme.
