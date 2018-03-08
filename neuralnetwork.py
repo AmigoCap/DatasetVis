@@ -24,7 +24,6 @@ import cv2
 
 import settings
 import os
-import prediction as pr
 
 
 def neuralNetwork():
@@ -107,5 +106,4 @@ def neuralNetwork():
     # Save model when training is complete to a file
     model.save("dataviz-classifier.tfl")
     print(model.evaluate(X,Y))
-    pr.prediction()
     print("Network trained and saved as dataviz-classifier.tfl!")
