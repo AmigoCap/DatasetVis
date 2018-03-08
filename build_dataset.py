@@ -6,7 +6,6 @@ import pickle
 import cv2
 import shutil
 import os
-import neuralnetwork as nn
 import settings
 
 def buildDataSet(path):
@@ -113,5 +112,3 @@ def buildDataSet(path):
     with open('dataset.pkl', 'wb') as f:
         #train_set, valid_set, test_set = pickle.load(f)
         pickle.dump((X_train,Y_train,X_val_resized,Y_val_resized),f)
-
-    nn.neuralNetwork()
