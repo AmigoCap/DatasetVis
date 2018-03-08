@@ -9,7 +9,7 @@ globalLabels = []
 
 def loadImage(filePath):
     image = cv2.imread(filePath)
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return image
 
 def getLabels():

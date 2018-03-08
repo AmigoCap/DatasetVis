@@ -159,4 +159,5 @@ def prediction():
             confusion[labels[i],label_predicted[i]] += 1
 
     print("The confusion matrix is : ")
+    print(ld.getLabels())
     print(confusion)
