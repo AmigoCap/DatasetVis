@@ -1,9 +1,9 @@
 # Classification de Data Vizualisation : état de l’art
 
-**1. Etat de l’art des différents types de Data vizualisation**
+## 1. Etat de l’art des différents types de Data vizualisation**
 
 
-***1.1. Data vizualisation les plus utilisées
+**1.1. Data vizualisation les plus utilisées
 
 Histogramme (bar chart & histogram)
 
@@ -23,9 +23,9 @@ Il est à noter que chaque grand type de diagramme peut comporter des sous types
 diagrammes à bulles (bubble chart) représenté ci-dessous peuvent être considéré comme une sous-
 catégorie des nuages de points.
 
-```
+
 1.2. Etat de l’art (quasi) exhaustif des types de data vizualisation possible
-```
+
 2 projets se sont proposés de faire une ontologie de l’ensemble des data vizualisations existantes.
 
 Ils se nomment « dataviz catalogue » et « dataviz project » dont les liens sont ci-dessous.
@@ -132,11 +132,11 @@ Win-loss Sparkline
 Word Cloud^
 ```
 
-**2. Etat de l’art de l’existant en matière de classification de Data vizualisation**
+## 2. Etat de l’art de l’existant en matière de classification de Data vizualisation**
 
-```
-2.1. Points généraux
-```
+
+**2.1. Points généraux
+
 Les étapes impliquées par les algorithmes de classification de diagramme sont généralement au
 nombre de 2 :
 
@@ -149,9 +149,9 @@ classification.
 Les détails de fonctionnement sur ces algorithmes sont détaillés dans la spécification des algorithmes
 de classification. Nous ferons ici le focus sur leur application pour les diagrammes.
 
-```
-2.2. Résultats expérimentaux
-```
+
+**2.2. Résultats expérimentaux
+
 L’expérience consiste à distinguer des Bar Chart, des line chart, des Doughnutchart, des Pie chart et
 d’autres diagrammes. Il existe des variations 2D ou 3D de chaque diagramme.
 
@@ -161,9 +161,9 @@ Rapidité :
 
 Taux d’erreur :
 
-```
-1.1. Algorithme des k plus proches voisins
-```
+
+2.2.1. Algorithme des k plus proches voisins
+
 
 Rappelons que cet algorithme consiste à calculer la distance euclidienne entre le digramme entrant
 et à comparer ces descripteurs avec et ceux des autres diagrammes du dataset.
@@ -172,9 +172,9 @@ Malgré sa simplicité apparente, elle est la plus précise pour des diagrammes 
 qui sont en jeu aussi. Cette simplicité explique pourquoi elle est également la plus rapide. Elle garde
 néanmoins un taux d’erreur qui n’est pas optimal comparé par exemple au SVM.
 
-```
-1.2. Algorithme SVM
-```
+
+2.2.2. Algorithme SVM
+
 Rappelons que le principe est de tracer un hyperplan qui optimise les distances entre plusieurs
 classes grâce à une classification de type linéaire.
 
@@ -183,9 +183,9 @@ précision rivalise avec celle des algorithmes à k plus proches voisins et le t
 La contrepartie de ses performances est la relative lenteur par rapport à un simple algorithme de
 KNN même si l’ordre de grandeur reste le même.
 
-```
-1.3. Algorithme sous forme de réseau de neurone
-```
+
+2.2.3. Algorithme sous forme de réseau de neurone
+
 Rappelons que le principe est d’utiliser un procédé multicouche qui composé entre elles et avec des
 méthodes de rétro-propagation des résultats prennent en entrée un diagramme input et par
 apprentissage automatique sur un grand nombre de donnée sort en output la classe correspondante.
