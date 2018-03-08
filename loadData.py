@@ -5,27 +5,30 @@ from os.path import isfile, join
 import build_dataset as bd
 import settings
 
-labels = []
-
+globalLabels = []
 
 def loadImage(filePath):
     image = cv2.imread(filePath)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return image
 
+def getLabels():
+    return globalLabels
+
+def getLabel(filePath):
+    fileName = filePath.split('/')[len(filePath.split('/'))-1]
+    label = ''
+    for i in range(0, len(fileName.split('_')) - 1):
+        label += fileName.split('_')[i] + '_'
+
+    return label[:-1]
+
 
 def resize_image(folderPath, fileName, final_height, final_width):
     image = loadImage(folderPath + '/' + fileName)
 
-    # Récupération des différents labels
-    label = ''
-    for i in range(0, len(fileName.split('_')) - 1):
-        label += fileName.split('_')[i]+'_'
-
-    label = label[:-1]
-
-    if label not in labels:
-        labels.append(label)
+    if getLabel(folderPath + '/' + fileName) not in globalLabels:
+        globalLabels.append(getLabel(folderPath + '/' + fileName))
 
     height, width, channels = image.shape
     final_ratio = float(final_width) / final_height

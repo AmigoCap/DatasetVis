@@ -7,6 +7,7 @@ import cv2
 import shutil
 import os
 import settings
+import loadData as ld
 
 def buildDataSet(path):
     #Building an images dataset with 3 classes : Line chart Bar chart, Scatter plot
@@ -33,7 +34,8 @@ def buildDataSet(path):
     addrs = glob.glob(path)
 
     #Get a list of my training images labels
-    labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    labels = [ld.getLabels().index(ld.getLabel(addr)) for addr in addrs]
 
     #To shuffle data
     if shuffle_data:
