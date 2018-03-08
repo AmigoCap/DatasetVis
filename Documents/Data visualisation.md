@@ -2,9 +2,9 @@
 
 **1. Etat de l’art des différents types de Data vizualisation**
 
-```
-1.1. Data vizualisation les plus utilisées
-```
+
+***1.1. Data vizualisation les plus utilisées
+
 Histogramme (bar chart & histogram)
 
 Nuage de point (scatter plot)
