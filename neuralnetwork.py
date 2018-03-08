@@ -21,7 +21,7 @@ import numpy as np
 import argparse
 import loadData
 import cv2
-
+import loadData as ld
 import settings
 import os
 
@@ -131,7 +131,7 @@ def neuralNetwork():
         network = fully_connected(network, 512, activation='relu')
 
     # Step 8: Fully-connected neural network with three outputs (0=isn't a bird, 1=is a bird) to make the final prediction
-    network = fully_connected(network, 3, activation='softmax')
+    network = fully_connected(network, ld.getLabelsNumber(), activation='softmax')
 
     # Tell tflearn how we want to train the network
     network = regression(network, optimizer='adam',

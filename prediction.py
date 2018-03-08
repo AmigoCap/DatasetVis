@@ -16,6 +16,7 @@ import pickle
 import cv2
 from random import shuffle
 import settings
+import loadData as ld
 import os
 
 
@@ -66,7 +67,6 @@ def prediction():
         network = dropout(network, 0.5)
         # Step 8: Fully-connected neural network with three outputs (0=isn't a bird, 1=is a bird) to make the final prediction
 
-        network = fully_connected(network, 3, activation='softmax')
 
     elif reseau == 2:
         network = conv_2d(network, 32, 3, activation='relu')
@@ -77,7 +77,6 @@ def prediction():
         network = max_pool_2d(network, 2)
         network = fully_connected(network, 512, activation='relu')
         network = fully_connected(network, 512, activation='relu')
-        network = fully_connected(network, 3, activation='softmax')
 
     elif reseau == 3:
         network = conv_2d(network, 32, 3, activation='relu')
@@ -89,7 +88,6 @@ def prediction():
         network = fully_connected(network, 512, activation='relu')
         network = fully_connected(network, 512, activation='relu')
         network = dropout(network, 0.5)
-        network = fully_connected(network, 3, activation='softmax')
 
     elif reseau == 4:
         network = conv_2d(network, 32, 3, activation='relu')
@@ -100,7 +98,6 @@ def prediction():
         network = conv_2d(network, 32, 5, padding='valid', activation='relu')
         network = fully_connected(network, 512, activation='relu')
         network = dropout(network, 0.5)
-        network = fully_connected(network, 3, activation='softmax')
 
     elif reseau == 5:
         network = conv_2d(network, 64, 3, activation='relu')
@@ -111,7 +108,8 @@ def prediction():
         network = max_pool_2d(network, 2)
         network = fully_connected(network, 512, activation='relu')
         network = fully_connected(network, 512, activation='relu')
-        network = fully_connected(network, 3, activation='softmax')
+
+    network = fully_connected(network, ld.getLabelsNumber(), activation='softmax')
 
     network = regression(network, optimizer='adam',
                          loss='categorical_crossentropy',
@@ -124,7 +122,8 @@ def prediction():
 
     # Get a list of my testing images paths
     addrs = glob.glob("./test/*.jpg")
-    labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    labels = [ld.getLabels().index(ld.getLabel(addr)) for addr in addrs]
 
     tp = 0
     label_predicted = []
@@ -137,9 +136,9 @@ def prediction():
          # Predict
          prediction = model.predict([img])
          label_predicted.append(np.argmax(prediction[0]))
-         # Check the result.
-         is_line = np.argmax(prediction[0]) == 0
-         is_bar = np.argmax(prediction[0]) == 1
+         # # Check the result.
+         # is_line = np.argmax(prediction[0]) == 0
+         # is_bar = np.argmax(prediction[0]) == 1
 
          if labels[index] == np.argmax(prediction[0]):
              # print("True positive")
