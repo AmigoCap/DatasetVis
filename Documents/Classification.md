@@ -4,7 +4,7 @@
 
 **Classification :** Dans une classification, la variable cible est qualitative. Il s’agit de créer des catégories. Elle s’oppose en cela à la régression dont la variable cible est quantitative.
 
-## DETAIL DE L’ETAT DE L’ART**
+## DETAIL DE L’ETAT DE L’ART
 
 
 Methode de classification 
