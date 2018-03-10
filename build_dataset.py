@@ -9,6 +9,29 @@ import os
 import settings
 import loadData as ld
 
+def getUniformDatas(addrs):
+    offset_test = settings.offset_test
+    test_addrs =[]
+    train_val_addrs=[]
+    nbLabels = ld.getLabelsNumber()
+    Labels = ld.getLabels()
+
+    separated_Classes = [[] for _ in range(nbLabels)]
+
+    for addr in addrs:
+        for i in range(nbLabels):
+            if Labels[i] in addr :
+                separated_Classes[i].append(addr)
+
+    for i in range(nbLabels):
+        test_addrs.append(separated_Classes[i][0:int(offset_test * len(separated_Classes[i]))])
+        train_val_addrs.append(separated_Classes[i][int(offset_test * len(separated_Classes[i])):])
+
+    test_addrs = [item for sublist in test_addrs for item in sublist]
+    train_val_addrs = [item for sublist in train_val_addrs for item in sublist]
+
+    return test_addrs, train_val_addrs
+
 
 def buildDataSet(path):
     # Building an images dataset with 3 classes : Line chart Bar chart, Scatter plot
@@ -33,18 +56,17 @@ def buildDataSet(path):
 
     # Get a list of my images paths
     addrs = glob.glob(path)
+    test_addrs, train_val_addrs = getUniformDatas(addrs)
 
     # Get a list of my training images labels
     # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
-    labels = [ld.getLabels().index(ld.getLabel(addr)) for addr in addrs]
+    train_val_labels = [ld.getLabels().index(ld.getLabel(addr)) for addr in train_val_addrs]
 
     # To shuffle data
     if shuffle_data:
-        c = list(zip(addrs, labels))
+        c = list(zip(train_val_addrs, train_val_labels))
         shuffle(c)
-        addrs, labels = zip(*c)
-
-    test_addrs = addrs[0:int(offset_test * len(addrs))]
+        train_val_addrs, train_val_labels = zip(*c)
 
     if os.path.isdir('./test'):
         shutil.rmtree('./test')
@@ -54,14 +76,11 @@ def buildDataSet(path):
     for jpgfile in test_addrs:
         shutil.copy(jpgfile, dst_dir)
 
-    train_val_addrs = addrs[int(offset_test * len(addrs)):]
-    train_val_labels = labels[int(offset_test * len(addrs)):]
-
     # Divide the data into offset% train, offset% validation
-    train_addrs = train_val_addrs[0:int(offset_train_val * len(addrs))]
-    train_labels = train_val_labels[0:int(offset_train_val * len(labels))]
-    validation_addrs = train_val_addrs[int(offset_train_val * len(addrs)):]
-    validation_labels = train_val_labels[int(offset_train_val * len(labels)):]
+    train_addrs = train_val_addrs[0:int(offset_train_val * len(train_val_addrs))]
+    train_labels = train_val_labels[0:int(offset_train_val * len(train_val_labels))]
+    validation_addrs = train_val_addrs[int(offset_train_val * len(train_val_addrs)):]
+    validation_labels = train_val_labels[int(offset_train_val * len(train_val_labels)):]
 
     # Create a list of image array for the training dataset
     for addr in train_addrs:
@@ -77,15 +96,6 @@ def buildDataSet(path):
         a[i] = 1
         Y_train.append(a)
 
-    # for a in Y:
-    #     if a == 0:
-    #         Y_train.append([1, 0, 0])
-    #     else:
-    #         if a == 1:
-    #             Y_train.append([0, 1, 0])
-    #         else:
-    #             Y_train.append([0, 0, 1])
-
     Y_train = np.asarray(Y_train, dtype='float32')
 
     # Create a list of resized image array for the validation dataset
@@ -100,15 +110,6 @@ def buildDataSet(path):
         a = [0] * nbLabels
         a[i] = 1
         Y_val_resized.append(a)
-
-    # for a in Y_val:
-    #     if a == 0:
-    #         Y_val_resized.append([1, 0, 0])
-    #     else:
-    #         if a == 1:
-    #             Y_val_resized.append([0, 1, 0])
-    #         else:
-    #             Y_val_resized.append([0, 0, 1])
 
     Y_val_resized = np.asarray(Y_val_resized, dtype='float32')
 
