@@ -76,7 +76,7 @@ def prediction():
         recall.append(recall_bis)
     print("recall : ")
     print(recall)
-alexise
+
     prediction =[]
     for i in range(0,len(ld.getLabels())):
         predict_bis=0
