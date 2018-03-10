@@ -62,3 +62,16 @@ def prediction():
     print("The confusion matrix is : ")
     print(ld.getLabels())
     print(confusion)
+
+    recall =[]
+    for i in range(0,len(ld.getLabels())):
+        recall_bis=0
+        sum=0
+        for j in range(0,len(ld.getLabels())):
+            sum+=confusion[j][i]
+            if sum==0:
+                recall_bis=0
+            else:
+                recall_bis=(confusion[i][i]/sum)
+        recall.append(recall_bis)
+    print("recall"+recall)
