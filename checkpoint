@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/alexis/Documents/GitHub/DatasetVis/dataviz-classifier.tfl"
+all_model_checkpoint_paths: "/Users/alexis/Documents/GitHub/DatasetVis/dataviz-classifier.tfl"

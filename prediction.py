@@ -74,4 +74,19 @@ def prediction():
             else:
                 recall_bis=(confusion[i][i]/sum)
         recall.append(recall_bis)
-    print("recall"+recall)
+    print("recall : ")
+    print(recall)
+alexise
+    prediction =[]
+    for i in range(0,len(ld.getLabels())):
+        predict_bis=0
+        sum=0
+        for j in range(0,len(ld.getLabels())):
+            sum+=confusion[i][j]
+            if sum==0:
+                predict_bis=0
+            else:
+                predict_bis=(confusion[i][i]/sum)
+        prediction.append(predict_bis)
+    print("prediction : ")
+    print(prediction)

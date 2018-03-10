@@ -1,11 +1,11 @@
 #Path to the dataset you want to use to train and test the convolutional neural network
-databasePath = '../Dataset'
+databasePath = '/Users/alexis/Documents/GitHub/Dataset'
 #Size of the reisized square images
-size = 64
+size = 32
 #Part of the dataset you want to test the model
-offset_test = 0.05
+offset_test = 0.1
 #Part of the dataset to train the model, the other part to cross validation
-offset_train_val = 0.7
+offset_train_val = 0.3
 #Number of iterations on your training dataset
 nb_epoch = 10
 #Total number of training examples present in a single batch.
@@ -15,4 +15,4 @@ learning_rate = 0.001
 
 nb_filter = 32
 filter_size = 3
-reseau = 3
+reseau = 1
