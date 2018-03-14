@@ -24,7 +24,7 @@ def prediction():
     # Get a list of my testing images paths
     addrs = glob.glob("./test/*.jpg")
     # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
-    labels = [ld.getLabels().index(ld.getLabel(addr)) for addr in addrs]
+    labels = [ld.getLabels().index(ld.getLabel(addr.replace('\\','/'))) for addr in addrs]
 
     tp = 0
     label_predicted = []
@@ -36,10 +36,14 @@ def prediction():
          img = cv2.imread(addr).astype(np.float32, casting='unsafe')
          # Predict
          prediction = model.predict([img])
-         label_predicted.append(np.argmax(prediction[0]))
+         if max(prediction[0]) < 1.2/len(prediction[0]):
+            label_predicted.append(len(prediction[0]))
+         else:
+             label_predicted.append(np.argmax(prediction[0]))
          # # Check the result.
          # is_line = np.argmax(prediction[0]) == 0
          # is_bar = np.argmax(prediction[0]) == 1
+
 
          if labels[index] == np.argmax(prediction[0]):
              # print("True positive")
@@ -60,8 +64,12 @@ def prediction():
             confusion[labels[i],label_predicted[i]] += 1
 
     print("The confusion matrix is : ")
-    print(ld.getLabels())
-    print(confusion)
+    if size == len(prediction[0]):
+        print(ld.getLabels() + ['uncategorized'])
+        print(confusion[:-1])
+    else:
+        print(ld.getLabels())
+        print(confusion)
 
     recall =[]
     for i in range(0,len(ld.getLabels())):
