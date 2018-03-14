@@ -1,5 +1,5 @@
 #Path to the dataset you want to use to train and test the convolutional neural network
-databasePath = '/Users/alexis/Documents/GitHub/Dataset'
+databasePath = 'C:/Users/ACER/Desktop/Dataset_clean'
 #Size of the reisized square images
 size = 32
 #Part of the dataset you want to test the model
