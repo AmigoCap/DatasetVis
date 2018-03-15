@@ -56,8 +56,7 @@ def prediction():
 
         json_result['results'].append({
             'path': addr,
-            'predictions': prediction_array,
-            'predicted_label': label_predicted[i].item()
+            'predictions': prediction_array
         })
 
         # label_predicted.append(np.argmax(prediction[0]))
