@@ -2,6 +2,8 @@
 from __future__ import division, print_function, absolute_import
 
 import glob
+import json
+import os
 import numpy as np
 import cv2
 import settings
@@ -30,22 +32,38 @@ def prediction():
     label_predicted = []
     paths_images_wrong = []
 
-    for index, addr in enumerate(addrs):
-         # Scale it to 32x32
-         #print(addr)
-         img = cv2.imread(addr).astype(np.float32, casting='unsafe')
-         # Predict
-         prediction = model.predict([img])
-         label_predicted.append(np.argmax(prediction[0]))
-         # # Check the result.
-         # is_line = np.argmax(prediction[0]) == 0
-         # is_bar = np.argmax(prediction[0]) == 1
+    json_result = settings.json_result
 
-         if labels[index] == np.argmax(prediction[0]):
-             # print("True positive")
-             tp += 1
-         else:
-             paths_images_wrong.append(addrs[index])
+    for index, addr in enumerate(addrs):
+        # Scale it to 32x32
+        #print(addr)
+        img = cv2.imread(addr).astype(np.float32, casting='unsafe')
+        # Predict
+        prediction = model.predict([img])
+
+        prediction_array = []
+
+        for i, label in enumerate(ld.getLabels()):
+            prediction_array.append({
+                'label': label,
+                'proba': prediction[0][i].item()
+            })
+
+        json_result['results'].append({
+            'path': addr,
+            'predictions': prediction_array
+        })
+
+        label_predicted.append(np.argmax(prediction[0]))
+        # # Check the result.
+        # is_line = np.argmax(prediction[0]) == 0
+        # is_bar = np.argmax(prediction[0]) == 1
+
+        if labels[index] == np.argmax(prediction[0]):
+            # print("True positive")
+            tp += 1
+        else:
+            paths_images_wrong.append(addrs[index])
     print('###### Ensemble des images mal classées :')
     print(paths_images_wrong)
 
@@ -59,6 +77,21 @@ def prediction():
         for i in range(len(labels)):
             confusion[labels[i],label_predicted[i]] += 1
 
+    # json_result['confusion'] = confusion.tolist()
+
+    # json_str = json.dumps(json_result)
+
     print("The confusion matrix is : ")
     print(ld.getLabels())
     print(confusion)
+
+    with open('result.json', 'w') as outfile:
+        json.dump(json_result, outfile)
+
+    # try:
+    #     os.stat("result.txt")
+    #     with open('result.txt', 'w') as outfile:
+    #         json.dump(json_result, outfile)
+    # except:
+    #     with open('result.txt', 'w') as outfile:
+    #         json.dump(json_result, outfile)
