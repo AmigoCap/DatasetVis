@@ -26,7 +26,7 @@ def prediction():
     # Get a list of my testing images paths
     addrs = glob.glob("./test/*.jpg")
     # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
-    labels = [ld.getLabels().index(ld.getLabel(addr)) for addr in addrs]
+    labels = [ld.getLabels().index(ld.getLabel(addr.replace('\\','/'))) for addr in addrs]
 
     tp = 0
     label_predicted = []
@@ -41,6 +41,11 @@ def prediction():
         # Predict
         prediction = model.predict([img])
 
+        if max(prediction[0]) < 1.2 / len(prediction[0]):
+            label_predicted.append(len(prediction[0]))
+        else:
+            label_predicted.append(np.argmax(prediction[0]))
+
         prediction_array = []
 
         for i, label in enumerate(ld.getLabels()):
@@ -51,10 +56,11 @@ def prediction():
 
         json_result['results'].append({
             'path': addr,
-            'predictions': prediction_array
+            'predictions': prediction_array,
+            'predicted_label': label_predicted[i].item()
         })
 
-        label_predicted.append(np.argmax(prediction[0]))
+        # label_predicted.append(np.argmax(prediction[0]))
         # # Check the result.
         # is_line = np.argmax(prediction[0]) == 0
         # is_bar = np.argmax(prediction[0]) == 1
@@ -64,6 +70,7 @@ def prediction():
             tp += 1
         else:
             paths_images_wrong.append(addrs[index])
+
     print('###### Ensemble des images mal classées :')
     print(paths_images_wrong)
 
@@ -82,16 +89,41 @@ def prediction():
     # json_str = json.dumps(json_result)
 
     print("The confusion matrix is : ")
-    print(ld.getLabels())
-    print(confusion)
+
+    if size == len(prediction[0]):
+        print(ld.getLabels() + ['uncategorized'])
+        print(confusion[:-1])
+    else:
+        print(ld.getLabels())
+        print(confusion)
+
+    recall =[]
+    for i in range(0,len(ld.getLabels())):
+        recall_bis=0
+        sum=0
+        for j in range(0,len(ld.getLabels())):
+            sum+=confusion[j][i]
+            if sum==0:
+                recall_bis=0
+            else:
+                recall_bis=(confusion[i][i]/sum)
+        recall.append(recall_bis)
+    print("recall : ")
+    print(recall)
+
+    prediction =[]
+    for i in range(0,len(ld.getLabels())):
+        predict_bis=0
+        sum=0
+        for j in range(0,len(ld.getLabels())):
+            sum+=confusion[i][j]
+            if sum==0:
+                predict_bis=0
+            else:
+                predict_bis=(confusion[i][i]/sum)
+        prediction.append(predict_bis)
+    print("prediction : ")
+    print(prediction)
 
     with open('result.json', 'w') as outfile:
         json.dump(json_result, outfile)
-
-    # try:
-    #     os.stat("result.txt")
-    #     with open('result.txt', 'w') as outfile:
-    #         json.dump(json_result, outfile)
-    # except:
-    #     with open('result.txt', 'w') as outfile:
-    #         json.dump(json_result, outfile)
