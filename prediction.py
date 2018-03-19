@@ -41,7 +41,7 @@ def prediction():
         # Predict
         prediction = model.predict([img])
 
-        if max(prediction[0]) < 1.2 / len(prediction[0]):
+        if max(prediction[0]) < 1.5 / len(prediction[0]):
             label_predicted.append(len(prediction[0]))
         else:
             label_predicted.append(np.argmax(prediction[0]))
@@ -97,32 +97,40 @@ def prediction():
         print(confusion)
 
     recall =[]
+    recall_global=0
     for i in range(0,len(ld.getLabels())):
         recall_bis=0
         sum=0
-        for j in range(0,len(ld.getLabels())):
-            sum+=confusion[j][i]
+        for j in range(0,len(ld.getLabels())+1):
+            sum+=confusion[i][j]
             if sum==0:
                 recall_bis=0
             else:
                 recall_bis=(confusion[i][i]/sum)
         recall.append(recall_bis)
+    recall_global=np.sum(recall)/len(ld.getLabels())
     print("recall : ")
     print(recall)
+    print("Global recall : ")
+    print(recall_global)
 
-    prediction =[]
+    precision =[]
+    precision_global=0
     for i in range(0,len(ld.getLabels())):
-        predict_bis=0
+        precis_bis=0
         sum=0
         for j in range(0,len(ld.getLabels())):
-            sum+=confusion[i][j]
+            sum+=confusion[j][i]
             if sum==0:
-                predict_bis=0
+                precis_bis=0
             else:
-                predict_bis=(confusion[i][i]/sum)
-        prediction.append(predict_bis)
-    print("prediction : ")
-    print(prediction)
+                precis_bis=(confusion[i][i]/sum)
+        precision.append(precis_bis)
+    precision_global=np.sum(precision)/len(ld.getLabels())
+    print("precision : ")
+    print(precision)
+    print("Global precision : ")
+    print(precision_global)
 
     with open('result.json', 'w') as outfile:
         json.dump(json_result, outfile)
