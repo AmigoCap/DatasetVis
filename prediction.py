@@ -12,7 +12,6 @@ import reseau as re
 
 
 
-
 def prediction():
     from tensorflow.python.framework import ops
     ops.reset_default_graph()
@@ -41,7 +40,7 @@ def prediction():
         # Predict
         prediction = model.predict([img])
 
-        if max(prediction[0]) < 1.5 / len(prediction[0]):
+        if max(prediction[0]) < settings.strictness_class / len(prediction[0]):
             label_predicted.append(len(prediction[0]))
         else:
             label_predicted.append(np.argmax(prediction[0]))
@@ -101,12 +100,20 @@ def prediction():
     for i in range(0,len(ld.getLabels())):
         recall_bis=0
         sum=0
-        for j in range(0,len(ld.getLabels())+1):
-            sum+=confusion[i][j]
-            if sum==0:
-                recall_bis=0
-            else:
-                recall_bis=(confusion[i][i]/sum)
+        if size == len(prediction[0]):
+            for j in range(0,ld.getLabelsNumber()+1):
+                sum+=confusion[i][j]
+                if sum==0:
+                    recall_bis=0
+                else:
+                    recall_bis=(confusion[i][i]/sum)
+        else :
+            for j in range(0,ld.getLabelsNumber()):
+                sum+=confusion[i][j]
+                if sum==0:
+                    recall_bis=0
+                else:
+                    recall_bis=(confusion[i][i]/sum)
         recall.append(recall_bis)
     recall_global=np.sum(recall)/len(ld.getLabels())
     print("recall : ")
