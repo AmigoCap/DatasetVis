@@ -6,3 +6,4 @@
 *.pyc
 dataset.pkl
 /data-classifier
+settings.py
