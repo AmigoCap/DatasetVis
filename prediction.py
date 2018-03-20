@@ -9,6 +9,7 @@ import cv2
 import settings
 import loadData as ld
 import reseau as re
+import main
 
 
 
@@ -31,7 +32,7 @@ def prediction():
     label_predicted = []
     paths_images_wrong = []
 
-    json_result = settings.json_result
+    json_result = main.json_result
 
     for index, addr in enumerate(addrs):
         # Scale it to 32x32

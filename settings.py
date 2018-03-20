@@ -22,21 +22,3 @@ strictness_class = 1.3
 nb_filter = 32
 filter_size = 3
 reseau = 1
-
-# Initialization of output json
-json_result = {
-    'timestamp': time.time(),
-    'settings': {
-        'size': size,
-        'offset_test': offset_test,
-        'offset_train_val': offset_train_val,
-        'nb_epoch': nb_epoch,
-        'batch_size': batch_size,
-        'learning_rate': learning_rate,
-        'nb_filter': nb_filter,
-        'filter_size': filter_size,
-        'reseau': reseau
-    },
-    'results': [],
-    'confusion': []
-}
