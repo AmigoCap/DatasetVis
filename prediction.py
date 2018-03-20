@@ -9,7 +9,8 @@ import cv2
 import settings
 import loadData as ld
 import reseau as re
-import main
+import datetime
+import result as rs
 
 
 
@@ -32,7 +33,7 @@ def prediction():
     label_predicted = []
     paths_images_wrong = []
 
-    json_result = main.json_result
+    json_result = rs.init_result()
 
     for index, addr in enumerate(addrs):
         # Scale it to 32x32
@@ -140,5 +141,5 @@ def prediction():
     print("Global precision : ")
     print(precision_global)
 
-    with open('result.json', 'w') as outfile:
+    with open('result_' + str(datetime.datetime.now()) + '.json', 'w') as outfile:
         json.dump(json_result, outfile)
