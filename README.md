@@ -32,7 +32,7 @@ Pour lancer le script, tapez :
 ```
 python3 main.py
 ```
-Après l'exécution du script, un fichier "results.json" est créé. Celui-ci contient la date d'exécution, les paramètres utilisés ainsi que les différentes probabilités de label pour chaque images.
+Après l'exécution du script, un fichier "results_<date_de_creation>.json" est créé. Celui-ci contient la date d'exécution, les paramètres utilisés ainsi que les différentes probabilités de label pour chaque images.
 
 Ce fichier sera utilisé pour la visualisation des résultats.
 
