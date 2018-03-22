@@ -20,34 +20,38 @@ def prediction():
 
     model = re.getReseau()
 
-    #print("'./data-classifier/dataviz-classifier.tfl.ckpt-" + str(count))
+    #Take the network previously trained
     model.load("dataviz-classifier.tfl")
-    # model.load("./data-classifier/dataviz-classifier.tfl.ckpt-" + str(count))
 
     # Get a list of my testing images paths
     addrs = glob.glob("./test/*.jpg")
-    # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    # labels = give a number to each category in addrs (ex : line chart = 0 ; bar chart= 1, etc...)
     labels = [ld.getLabels().index(ld.getLabel(addr.replace('\\','/'))) for addr in addrs]
+
 
     tp = 0
     label_predicted = []
     paths_images_wrong = []
 
+    #Initialisation of the results.json file
     json_result = rs.init_result()
 
     for index, addr in enumerate(addrs):
         # Scale it to 32x32
         #print(addr)
         img = cv2.imread(addr).astype(np.float32, casting='unsafe')
-        # Predict
+        # Predict with the trained model
         prediction = model.predict([img])
 
+
+        #strictness : assigned to a category only if the prediction is 1.2 better than hazard
         if max(prediction[0]) < settings.strictness_class / len(prediction[0]):
             label_predicted.append(len(prediction[0]))
         else:
             label_predicted.append(np.argmax(prediction[0]))
 
         prediction_array = []
+
 
         for i, label in enumerate(ld.getLabels()):
             prediction_array.append({
