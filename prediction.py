@@ -20,35 +20,40 @@ def prediction():
 
     model = re.getReseau()
 
-    #print("'./data-classifier/dataviz-classifier.tfl.ckpt-" + str(count))
+    #Take the network previously trained
     model.load("dataviz-classifier.tfl")
-    # model.load("./data-classifier/dataviz-classifier.tfl.ckpt-" + str(count))
 
     # Get a list of my testing images paths
     addrs = glob.glob("./test/*.jpg")
-    # labels = [0 if 'line' in addr else 1 if 'bar' in addr else 2 for addr in addrs]  # 0 = Line, 1 = Bar, 2=Scatter
+    # labels = give a number to each category in addrs (ex : line chart = 0 ; bar chart= 1, etc...)
     labels = [ld.getLabels().index(ld.getLabel(addr.replace('\\','/'))) for addr in addrs]
+
 
     tp = 0
     label_predicted = []
     paths_images_wrong = []
 
+    #Initialisation of the results.json file
     json_result = rs.init_result()
 
     for index, addr in enumerate(addrs):
         # Scale it to 32x32
         #print(addr)
         img = cv2.imread(addr).astype(np.float32, casting='unsafe')
-        # Predict
+        # Predict with the trained model
         prediction = model.predict([img])
 
+
+        #strictness : assigned to a category only if the prediction is 1.2 better than hazard
         if max(prediction[0]) < settings.strictness_class / len(prediction[0]):
             label_predicted.append(len(prediction[0]))
+        #Attribute a class to the highest probability
         else:
             label_predicted.append(np.argmax(prediction[0]))
 
         prediction_array = []
 
+        #Construction of the array of prediction
         for i, label in enumerate(ld.getLabels()):
             prediction_array.append({
                 'label': label,
@@ -60,11 +65,7 @@ def prediction():
             'predictions': prediction_array
         })
 
-        # label_predicted.append(np.argmax(prediction[0]))
-        # # Check the result.
-        # is_line = np.argmax(prediction[0]) == 0
-        # is_bar = np.argmax(prediction[0]) == 1
-
+        #Construction of the confusion matrix
         if labels[index] == np.argmax(prediction[0]):
             # print("True positive")
             tp += 1
@@ -84,12 +85,10 @@ def prediction():
         for i in range(len(labels)):
             confusion[labels[i],label_predicted[i]] += 1
 
-    # json_result['confusion'] = confusion.tolist()
-
-    # json_str = json.dumps(json_result)
 
     print("The confusion matrix is : ")
 
+    #Attribution to each class (uncategorized : if max(prediction)<strictness_class)
     if size == len(prediction[0]):
         print(ld.getLabels() + ['uncategorized'])
         print(confusion[:-1])
@@ -97,6 +96,9 @@ def prediction():
         print(ld.getLabels())
         print(confusion)
 
+
+
+#Calculation of the recall & precision
     recall =[]
     recall_global=0
     for i in range(0,len(ld.getLabels())):
@@ -141,5 +143,7 @@ def prediction():
     print("Global precision : ")
     print(precision_global)
 
+
+#create the json result file
     with open('result_' + str(datetime.datetime.now()) + '.json', 'w') as outfile:
         json.dump(json_result, outfile)
