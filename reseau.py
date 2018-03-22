@@ -41,16 +41,16 @@ def getReseau():
         network = max_pool_2d(network, 2)
 
         # Step 3: Convolution again
-        network = conv_2d(network, nb_filter * 4, filter_size, activation='relu')
+        network = conv_2d(network, nb_filter * 2, filter_size, activation='relu')
 
         # Step 4: Convolution yet again
-        network = conv_2d(network, nb_filter * 4, filter_size, activation='relu')
+        network = conv_2d(network, nb_filter * 2, filter_size, activation='relu')
 
         # Step 5: Max pooling again
         network = max_pool_2d(network, 2)
 
         # Step 6: Fully-connected 512 node neural network
-        network = fully_connected(network, nb_filter * 16, activation='relu')
+        network = fully_connected(network, nb_filter * 8, activation='relu')
 
         # Step 7: Dropout - throw away some data randomly during training to prevent over-fitting
         network = dropout(network, 0.5)
