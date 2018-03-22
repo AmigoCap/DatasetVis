@@ -1,5 +1,6 @@
 import time
 import settings as st
+import prediction as pr
 
 # Initialization of output json
 def init_result():

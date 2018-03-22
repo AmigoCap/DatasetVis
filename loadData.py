@@ -13,14 +13,18 @@ def loadImage(filePath):
     return image
 
 def getLabels():
+<<<<<<< HEAD
     return sorted(globalLabels)
+=======
+    globalLabels.sort()
+    return globalLabels
+>>>>>>> 34f316e92748f7eb38d5b97ed0a5a766cf3f0f93
 
 def getLabel(filePath):
     fileName = filePath.split('/')[len(filePath.split('/'))-1]
     label = ''
     for i in range(0, len(fileName.split('_')) - 1):
         label += fileName.split('_')[i] + '_'
-
     return label[:-1]
 
 def getLabelsNumber():
@@ -28,7 +32,6 @@ def getLabelsNumber():
 
 def resize_image(folderPath, fileName, final_height, final_width):
     image = loadImage(folderPath + '/' + fileName)
-
     if getLabel(folderPath + '/' + fileName) not in globalLabels:
         globalLabels.append(getLabel(folderPath + '/' + fileName))
 
@@ -65,8 +68,9 @@ def resize_dataset():
     images = [f for f in os.listdir(folderPath) if isfile(join(folderPath, f))]
     print("########### Resizing all the dataset images to " + str(height) + " x " + str(
         height) + " in format .jpg #########")
-    for i, image in enumerate(images):
-        if image.split('.')[len(image.split('x'))] == 'png' or image.split('.')[len(image.split('x'))] == 'jpg' or \
-                image.split('.')[len(image.split('x'))] == 'jpeg':
-            if not resize_image(folderPath, image, height, width):
-                print(image + ' no success on resize')
+    for i, fileName in enumerate(images):
+        image = loadImage(folderPath + '/' + fileName)
+        if (fileName.split('.')[len(fileName.split('x'))] == 'png' or fileName.split('.')[len(fileName.split('x'))] == 'jpg' or \
+                fileName.split('.')[len(fileName.split('x'))] == 'jpeg') and (type(image).__name__ != 'NoneType'):
+            if not resize_image(folderPath, fileName, height, width):
+                print(fileName + ' no success on resize')
