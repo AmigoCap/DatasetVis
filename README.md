@@ -38,9 +38,23 @@ Ce fichier sera utilisé pour la visualisation des résultats.
 
 ## Scrapping
 
-Nous utiliserons le script issu du git image-scrapers afin de peupler notre 
-base de données. Celui-ci permet de récupérer des images issues de google et
-fournit un JSON associé.
+Nous utiliserons le script issu du git image-scrapers afin de peupler notre base de données. Celui-ci permet de récupérer des images issues de google et fournit un JSON associé.
+
+Afin d'utiliser le script de scrapping, il faut:
+- installer les différents modules importés en début de script
+- installer le driver chrome correpondant à la version du navigateur GoogleChrome présente sur l'ordi ([Page officielle](https://chromedriver.storage.googleapis.com/index.html))
+- modifier la ligne 24 du script et renseigner l'emplacement du driver 
+
+```
+browser = webdriver.Chrome(executable_path=r'C:/Users/ACER/Desktop/Projet_Info/chromedriver.exe')
+```
+
+Après modification du script, il faut remplacer les espaces de la requêtes par des "_", par exemple pour scrapper les images de "bar chart", on lancera la commande suivante:
+
+```
+python3 google-scrapper_2.0 bar_chart
+```
+
 
 ## Traitement d'image
 
