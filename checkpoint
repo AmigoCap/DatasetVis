@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/Luca/Desktop/DatasetVis/DatasetVis/dataviz-classifier.tfl"
+all_model_checkpoint_paths: "/Users/Luca/Desktop/DatasetVis/DatasetVis/dataviz-classifier.tfl"

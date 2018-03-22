@@ -17,6 +17,7 @@ def init_result():
             'reseau': st.reseau
         },
         'results': [],
-        'confusion': []
+        'confusion': [],
+        'metrics': []
     }
     return json_result

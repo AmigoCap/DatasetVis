@@ -13,7 +13,7 @@ def loadImage(filePath):
     return image
 
 def getLabels():
-    return globalLabels.sort()
+    return sorted(globalLabels)
 
 def getLabel(filePath):
     fileName = filePath.split('/')[len(filePath.split('/'))-1]
@@ -28,7 +28,6 @@ def getLabelsNumber():
 
 def resize_image(folderPath, fileName, final_height, final_width):
     image = loadImage(folderPath + '/' + fileName)
-    print(folderPath + '/' + fileName)
 
     if getLabel(folderPath + '/' + fileName) not in globalLabels:
         globalLabels.append(getLabel(folderPath + '/' + fileName))

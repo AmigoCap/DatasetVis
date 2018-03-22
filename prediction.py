@@ -139,5 +139,21 @@ def prediction():
     print("Global precision : ")
     print(precision_global)
 
+    json_result['metrics'].append({
+        'precision_global': precision_global,
+        'recall_global': recall_global
+    })
+
+    for index,label in enumerate(ld.getLabels()):
+        metrics = []
+        metrics.append({
+            'precision': precision[index],
+            'recall': recall[index]
+        })
+
+        json_result['metrics'].append({
+            label : metrics
+        })
+
     with open('result_' + str(datetime.datetime.now()) + '.json', 'w') as outfile:
         json.dump(json_result, outfile)
