@@ -1,7 +1,6 @@
 import numpy as np
 import glob
 from random import shuffle
-import loadData
 import pickle
 import cv2
 import shutil
@@ -10,12 +9,13 @@ import settings
 import loadData as ld
 
 def getUniformDatas(addrs):
+    # This function split images paths in train-val and test images path
+    # with the same percentage for each class
     offset_test = settings.offset_test
     test_addrs =[]
     train_val_addrs=[]
     nbLabels = ld.getLabelsNumber()
     Labels = ld.getLabels()
-
     separated_Classes = [[] for _ in range(nbLabels)]
 
     for addr in addrs:
@@ -34,7 +34,7 @@ def getUniformDatas(addrs):
 
 
 def buildDataSet(path):
-    # Building an images dataset with 3 classes : Line chart Bar chart, Scatter plot
+    # This function build an images dataset with the number of classes in the source folder
     shuffle_data = True
 
     # Contains images of 3 classes : Line Chart, Bar Chart, Scatter Chart

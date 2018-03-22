@@ -2,9 +2,9 @@
 
 ## Le projet
 
-Ce répertoire permet à partir d'une base de données d'images contenant 3 classes différentes d'entraîner un modèle de réseaux de neurones convolutionnels et de le tester sur une base test.
+Ce répertoire permet à partir d'une base de données d'images contenant n classes différentes d'entraîner un modèle de réseaux de neurones convolutionnels et de le tester sur une base test.
 
-À partir d'une base de données contenant 3 classes d'images de tailles et de formats quelconques, on redimensionne chaque image à la taille sizexsize et on convertit en JPG. 
+À partir d'une base de données contenant n classes d'images de tailles et de formats quelconques, on redimensionne chaque image à la taille sizexsize et on convertit en JPG. Il est primordial que le nom de la classe de l'image soit dans son nom, et notre script pour scrapper Google Image le fait automatiquement, en renommant avec la requête réalisée.
 
 On crée deux dossiers :
 - /data contient x% des images pour entraîner le réseau de neurones convolutionnels
@@ -13,7 +13,7 @@ On crée deux dossiers :
 À partir du dossier /data, on sérialise nos images de 'train' & 'validation' ainsi que leur labels respectifs dans un fichier pkl. Celui-ci sera lu pour entraîner le réseau de neurones. 
 À la fin de l'entraînement, qui peut être plus ou moins long suivant les paramètres que vous avez choisi, le modèle est enregistré.
 
-Il est ensuite utilisé automatiquement sur le dossier /test crée ultérieurement et en ressort une matrice de confusion.
+Il est ensuite utilisé automatiquement sur le dossier /test créé ultérieurement et en ressort une matrice de confusion.
 
 Comme chaque variable intermédiaire est enregistrée (modèle CNN entraînée, dataset dans le fichier pkl, dossiers /data et /test) il est possible de les réutiliser sans réaliser toutes les étapes.
 
@@ -32,13 +32,13 @@ Pour lancer le script, tapez :
 ```
 python3 main.py
 ```
-Après l'exécution du script, un fichier "results_<date_de_creation>.json" est créé. Celui-ci contient la date d'exécution, les paramètres utilisés ainsi que les différentes probabilités de label pour chaque images.
+Après l'exécution du script, un fichier "results_<date_de_creation>.json" est créé. Celui-ci contient la date d'exécution, les paramètres utilisés ainsi, les différentes probabilités de label pour chaque image et des métriques sur chaque classe (précision et recall).
 
-Ce fichier sera utilisé pour la visualisation des résultats.
+Ce fichier sera utilisé pour la visualisation des résultats à l'aide du framework d3.js.
 
 ## Scrapping
 
-Nous utiliserons le script issu du git image-scrapers afin de peupler notre base de données. Celui-ci permet de récupérer des images issues de google et fournit un JSON associé.
+Nous utiliserons le script <b>google-scrapper_2.0.py</b> issu du git image-scrapers afin de peupler notre base de données. Celui-ci permet de récupérer des images issues de google et fournit un JSON associé.
 
 Afin d'utiliser le script de scrapping, il faut:
 - installer les différents modules importés en début de script
@@ -54,17 +54,21 @@ Après modification du script, il faut remplacer les espaces de la requêtes par
 ```
 python3 google-scrapper_2.0 bar_chart
 ```
-
+Ce script nous permet de récupérer environ 400 images exploitables par classe et d'avoir des images correctement nommées pour faire tourner nos algorithmes.
 
 ## Traitement d'image
 
-Le fichier loadData.py permet d'effectuer un traitement préliminaire sur la base de données. Il contient la fonction "resize_dataset" qui prend en entrée trois arguments :
-- La dossier contenant l'ensmble de la base de données, la taille d'image désirée ainsi que la largeur
+Le fichier <b>loadData.py</b> permet d'effectuer un traitement préliminaire sur la base de données. Il contient la fonction "resize_dataset" qui prend en entrée trois arguments :
+- La dossier contenant l'ensemble de la base de données, la taille d'image désirée ainsi que la largeur
 - Il charge chaque image de la base de données et compare son ratio au ratio désiré : si le ratio ne convient pas, on ajoute du blanc à droite ou en bas de l'image afin de ne pas déformer l'image originale lors du changement d'échelle
 - On effectue le changement d'échelle de l'image pour obtenir les dimensions voulues
 - L'image est enregistrée au format ".jpg" dans le dossier data
 
-Cela nous permet d'avoir un ensemble d'images au bon format pour notre réseau de neurones.
+Cela nous permet d'avoir un ensemble d'images au bon format en entrée de notre réseau de neurones.
+
+## Comment utiliser nos scripts ?
+
+
 
 ## Auteurs
 

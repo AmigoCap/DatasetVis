@@ -12,8 +12,6 @@ import reseau as re
 import datetime
 import result as rs
 
-
-
 def prediction():
     from tensorflow.python.framework import ops
     ops.reset_default_graph()
@@ -145,7 +143,22 @@ def prediction():
     print("Global precision : ")
     print(precision_global)
 
+    json_result['metrics'].append({
+        'precision_global': precision_global,
+        'recall_global': recall_global
+    })
 
-#Fill the json result file
+    for index,label in enumerate(ld.getLabels()):
+        metrics = []
+        metrics.append({
+            'precision': precision[index],
+            'recall': recall[index]
+        })
+
+        json_result['metrics'].append({
+            label : metrics
+        })
+
+
     with open('result_' + str(datetime.datetime.now()) + '.json', 'w') as outfile:
         json.dump(json_result, outfile)
