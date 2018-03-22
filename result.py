@@ -18,12 +18,8 @@ def init_result():
             'reseau': st.reseau
         },
         'results': [],
-<<<<<<< HEAD
-        'confusion': []
-        'metrics' : 
-=======
         'confusion': [],
         'metrics': []
->>>>>>> 5c7a1962eb38bcafb8fea3fea7a89d31b97daefb
+
     }
     return json_result
