@@ -91,9 +91,11 @@ def prediction():
     #Attribution to each class (uncategorized : if max(prediction)<strictness_class)
     if size == len(prediction[0]):
         print(ld.getLabels() + ['uncategorized'])
+        json_result['confusion'] = confusion[:-1].tolist()
         print(confusion[:-1])
     else:
         print(ld.getLabels())
+        json_result['confusion'] = confusion.tolist()
         print(confusion)
 
 
