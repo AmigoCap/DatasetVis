@@ -144,6 +144,6 @@ def prediction():
     print(precision_global)
 
 
-#create the json result file
+#Fill the json result file
     with open('result_' + str(datetime.datetime.now()) + '.json', 'w') as outfile:
         json.dump(json_result, outfile)

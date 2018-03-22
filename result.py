@@ -19,5 +19,6 @@ def init_result():
         },
         'results': [],
         'confusion': []
+        'metrics' : 
     }
     return json_result
