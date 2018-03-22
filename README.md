@@ -68,7 +68,13 @@ Cela nous permet d'avoir un ensemble d'images au bon format en entrée de notre 
 
 ## Comment utiliser nos scripts ?
 
-
+Le fichier <main.py> permet de lancer les scripts : 
+- <b>loadData.py</b> traite les images brutes et les redimensionnent à la taille voulue en JPG.
+- <b>build_dataset.py</b> sérialise les images de train-validation et leurs labels correspondant dans un fichier Pickle.
+- <b>reseau.py</b> définit les différents modèles de réseaux de neurones que l'on peut choisir dans le fichier <b>settings.py</b>
+- <b>neuralnetwork.py</b> permet d'entraîner le modèle choisit à partir des données issues du fichier pkl et enregistre le modèle entraîné.
+- <b>prediction.py</b> utilise le modèle entraîné sur un ensemble test créé au préalable et enregistre les métriques dans un fichier JSON. 
+- <b>result.py</b> permet d'initialiser la structure de notre fichier JSON, avec notamment tous les paramètres choisis pour le lancement des scripts.
 
 ## Auteurs
 
