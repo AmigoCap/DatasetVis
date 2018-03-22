@@ -28,6 +28,7 @@ def getLabelsNumber():
 
 def resize_image(folderPath, fileName, final_height, final_width):
     image = loadImage(folderPath + '/' + fileName)
+    print(folderPath + '/' + fileName)
 
     if getLabel(folderPath + '/' + fileName) not in globalLabels:
         globalLabels.append(getLabel(folderPath + '/' + fileName))

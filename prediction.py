@@ -12,8 +12,6 @@ import reseau as re
 import datetime
 import result as rs
 
-
-
 def prediction():
     from tensorflow.python.framework import ops
     ops.reset_default_graph()
