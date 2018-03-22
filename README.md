@@ -40,13 +40,18 @@ Ce fichier sera utilisé pour la visualisation des résultats à l'aide du frame
 
 Nous utiliserons le script <b>google-scrapper_2.0.py</b> issu du git image-scrapers afin de peupler notre base de données. Celui-ci permet de récupérer des images issues de google et fournit un JSON associé.
 
+Afin d'installer l'ensemble des packages nécessaires au fonctionnement du script, installer le module pip ([Page officielle](https://pypi.python.org/pypi/pip))  et exécuter la commande suivante :  
+
+```
+pip3 install -r requirements-scraper.txt
+```
+
 Afin d'utiliser le script de scrapping, il faut:
-- installer les différents modules importés en début de script
 - installer le driver chrome correpondant à la version du navigateur GoogleChrome présente sur l'ordi ([Page officielle](https://chromedriver.storage.googleapis.com/index.html))
 - modifier la ligne 24 du script et renseigner l'emplacement du driver 
 
 ```
-browser = webdriver.Chrome(executable_path=r'C:/Users/ACER/Desktop/Projet_Info/chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:/Users/Desktop/chromedriver.exe')
 ```
 
 Après modification du script, il faut remplacer les espaces de la requêtes par des "_", par exemple pour scrapper les images de "bar chart", on lancera la commande suivante:
@@ -54,6 +59,7 @@ Après modification du script, il faut remplacer les espaces de la requêtes par
 ```
 python3 google-scrapper_2.0 bar_chart
 ```
+
 Ce script nous permet de récupérer environ 400 images exploitables par classe et d'avoir des images correctement nommées pour faire tourner nos algorithmes.
 
 ## Traitement d'image
@@ -68,7 +74,13 @@ Cela nous permet d'avoir un ensemble d'images au bon format en entrée de notre 
 
 ## Comment utiliser nos scripts ?
 
-
+Le fichier <main.py> permet de lancer les scripts : 
+- <b>loadData.py</b> traite les images brutes et les redimensionnent à la taille voulue en JPG.
+- <b>build_dataset.py</b> sérialise les images de train-validation et leurs labels correspondant dans un fichier Pickle.
+- <b>reseau.py</b> définit les différents modèles de réseaux de neurones que l'on peut choisir dans le fichier <b>settings.py</b>
+- <b>neuralnetwork.py</b> permet d'entraîner le modèle choisit à partir des données issues du fichier pkl et enregistre le modèle entraîné.
+- <b>prediction.py</b> utilise le modèle entraîné sur un ensemble test créé au préalable et enregistre les métriques dans un fichier JSON. 
+- <b>result.py</b> permet d'initialiser la structure de notre fichier JSON, avec notamment tous les paramètres choisis pour le lancement des scripts.
 
 ## Auteurs
 
