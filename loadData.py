@@ -13,7 +13,7 @@ def loadImage(filePath):
     return image
 
 def getLabels():
-    return globalLabels
+    return globalLabels.sort()
 
 def getLabel(filePath):
     fileName = filePath.split('/')[len(filePath.split('/'))-1]
