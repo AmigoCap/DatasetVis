@@ -21,7 +21,7 @@ Author: Rushil Srivastava (rushu0922@gmail.com)
 
 def search(url):
     # Create a browser and resize for exact pinpoints
-    browser = webdriver.Chrome(executable_path=r'C:/Users/ACER/Desktop/Projet_Info/chromedriver.exe')
+    browser = webdriver.Chrome(executable_path=r'C:/Users/Desktop/chromedriver.exe')
     browser.set_window_size(1024, 768)
     print("\n===============================================\n")
     print("[%] Successfully launched Chrome Browser")
