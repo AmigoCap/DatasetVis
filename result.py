@@ -15,7 +15,8 @@ def init_result():
             'learning_rate': st.learning_rate,
             'nb_filter': st.nb_filter,
             'filter_size': st.filter_size,
-            'reseau': st.reseau
+            'reseau': st.reseau,
+            'strictness_class' : st.strictness_class
         },
         'results': [],
         'confusion': [],

@@ -143,9 +143,19 @@ def prediction():
     print("Global precision : ")
     print(precision_global)
 
+
+    accuracy=0
+    sum=0
+    for i in range(0,len(ld.getLabels())):
+        sum+=confusion[i][i]
+    accuracy=sum/np.sum(confusion)
+    print('Accuracy :')
+    print(accuracy)
+
     json_result['metrics'].append({
         'precision_global': precision_global,
-        'recall_global': recall_global
+        'recall_global': recall_global,
+        'accuracy' : accuracy
     })
 
     for index,label in enumerate(ld.getLabels()):
