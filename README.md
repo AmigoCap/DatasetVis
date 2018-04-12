@@ -4,14 +4,14 @@
 
 Ce répertoire permet à partir d'une base de données d'images contenant n classes différentes d'entraîner un modèle de réseaux de neurones convolutionnels et de le tester sur une base test.
 
-À partir d'une base de données contenant n classes d'images de tailles et de formats quelconques, on redimensionne chaque image à la taille sizexsize et on convertit en JPG. Il est primordial que le nom de la classe de l'image soit dans son nom, et notre script pour scrapper Google Image le fait automatiquement, en renommant avec la requête réalisée.
+À partir d'une base de données contenant n classes d'images de tailles et de formats quelconques, on redimensionne chaque image à la taille size x size et on convertit en JPG. Il est primordial que le nom de la classe de l'image soit dans son nom, et notre script pour scrapper Google Image le fait automatiquement, en renommant avec la requête réalisée.
 
 On crée deux dossiers :
 - /data contient x% des images pour entraîner le réseau de neurones convolutionnels
-- /test contient (1-x)% des images pour tester le modèle finale enregistrée
+- /test contient (1-x)% des images pour tester le modèle finale enregistré
 
 À partir du dossier /data, on sérialise nos images de 'train' & 'validation' ainsi que leur labels respectifs dans un fichier pkl. Celui-ci sera lu pour entraîner le réseau de neurones.
-À la fin de l'entraînement, qui peut être plus ou moins long suivant les paramètres que vous avez choisi, le modèle est enregistré.
+À la fin de l'entraînement, qui peut être plus ou moins long suivant les paramètres que vous avez choisis, le modèle est enregistré.
 
 Il est ensuite utilisé automatiquement sur le dossier /test créé ultérieurement et en ressort une matrice de confusion.
 
@@ -19,7 +19,7 @@ Comme chaque variable intermédiaire est enregistrée (modèle CNN entraînée, 
 
 Dans le fichier <b>settings.py</b> il vous est possible de <b>modifier les différents paramètres</b> clés utilisés dans nos scripts Python, comme la taille des images, le part de l'ensemble test, etc.
 
-<b>Si vous souhaitez comprendre plus en détail le déroulement, les méthodes ainsi que les rendus du projet, le rapport regroupant tout cela est disponible dans le dossier document </b>.
+<b>Si vous souhaitez comprendre plus en détail le déroulement, les méthodes ainsi que les rendus du projet, le rapport et les présentations de projets sont disponibles dans le dossier document </b>.
 
 # Prise en main
 
