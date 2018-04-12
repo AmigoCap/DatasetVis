@@ -79,15 +79,15 @@ Cela nous permet d'avoir un ensemble d'images au bon format en entrée de notre 
 Avant de lancetr le script, il est nécessaire de choisir les paramètres voulus dans le fichier <b>settings.py</b>.
 
 Voici en détail les rôle de chaque paramètre :
-- databasePath =: emplacement du fichier d'images sources
+- databasePath : emplacement du fichier d'images sources
 - size : choix de la résolution de l'image (Attention, au delà de 64x64, cela devient très couteux pour les machines habituelles)
 - offset_test : pourcentage d'image prise pour tester le modèle (Par défaut à 0.1)
 - offset_train_val : pourcentage d'image du dossier d'entraînement, prise pour l'apprentissage. Le reste sert à la validation (Par défaut à 0.8)
 - nb_epoch nombre d'itérations, ie nombre de fois que chaque image va passer dans le réseau
 - batch_size : nombre d'images qui passent en même temps dans le réseau
 - learning_rate : taux d'apprentissage. Par défaut, fixé à 0.001
-- strictness_class : ce paramètre permet de classifier plus sérieusement. En effet, il n'attribuera une image à une classe qu'uniquement si son score est supérieure à ce chiffre x score du hasard (i.e. supérieur à strictness_class * 1/classes_number)
-- nb_filter nombre de filtre pour le réseau 1 dans la couche initiale (attention, ne fonctionne que si le réseau 1 est choisi. Pour les autres réseaux, ce paramètre est fixé à 32)
+- strictness_class : ce paramètre permet de classifier plus sérieusement. En effet, le réseau n'attribuera une image à une classe qu'uniquement si son score est supérieur à ce chiffre * score du hasard (i.e. supérieur à strictness_class * 1/classes_number). Si le score est trop faible, l'image sera associée à la catégorie "uncategorizd". Bien entendu, si ce paramètre est fixé à 1, cela correspond au cas classique. 
+- nb_filter : nombre de filtres pour le réseau 1 dans la couche initiale (attention, ne fonctionne que si le réseau 1 est choisi. Pour les autres réseaux, ce paramètre est fixé à 32)
 - filter_size : taille / résolution du filtre
 - reseau : choix du réseau. Allant de 1 à 5, les structures des réseaux sont disponibles dans le fichier reseau.py
 
@@ -173,6 +173,26 @@ Une image correspond à un tableau de pixels et son label respectif à un tablea
 
 Ces quatre objets sont sérialisés pour pouvoir être lus en entrée du réseau de neurones. Il est possible de modifier le pourcentage pour chacun des deux ensembles d’images. Par défaut, 20 % des images sont pour la validation et 80% pour l’entraînement.
 
+### Choix des catégories de visuels de datavisualisation
+
+Pour sélectionner les premières classes de datavizualisation, nous avons pris plusieurs critères en ligne de compte : 
+
+-	Des types de graphiques très fréquents en datavizualisation (i.e. éviter des graphiques théoriques rarement utilisés)
+-	L’abondance des ressources disponibles dans le cadre du scrapping
+-	La propreté des ressources disponibles dans le cadre du scrapping, c’est-à-dire le fait qu’un faible nombre d’images parasites (qui ne sont pas de la classe considérée) polluent la base de données et soient chronophages à supprimer à la main.
+-	La différenciation entre les classes permettant dans un premier temps de ne pas introduire trop de confusion pour l’algorithme (un stacked chart ou un histogram seront difficilement différentiables d'un bar chart).
+
+
+Sur cette base, nous avons choisi les trois catégories suivantes, comprenant le plus d'images pertinentes : 
+-	Aera chart (diagramme à aire)
+-	Bar chart (diagramme à barre)
+-	Pie chart (camembert)
+
+Nous avons enfin augmenté le nombre de catégories choisies. Cette extension s’est faite en deux étapes sur les mêmes critères que la sélection des trois classes initiales : 
+-	D’abord, le passage de 3 classes à 6 classes. Ont été ajouté les classes suivantes : line chart, venn diagram, radar chart.
+-	Ensuite le passage de 6 classes à 10 classes. Ont été ajouté les classes suivantes : dot map, choropleth map et bubble chart
+
+
 ## Choix des métriques de sortie
 
 #### Valeurs de sortie
@@ -238,28 +258,41 @@ Pour conclure, il est compliqué de prédire quel réseau et quels paramètres s
 
 
 
-|   Paramètres  |    3 classes    |    3 classes    |    10 classes   |
-| ------------- | : ------------: | : ------------: | : -----------:  |
-| reseau        |        1        |        3        |         1       |
-| filter_size   |        7        |        3        |         3       |
-| size (image)  |        64       |        64       |         64      |
-| learning_rate |        0.001    |        0.001    |         0.001   |
-| nb_epoch      |        125      |        125      |         125     |
-| Accuracy      |        91,60%   |        81,60%   |         71,03%  |
-
-|        | 3 classes | 6 classes | 10 classes |
-|--------|----------:|----------:|------------|
-| Réseau |       ayj |         k | j          |
-| kd     |      hjdi |           | poj        |
-|        |           |           |            |
+|               | 3 classes | 6 classes | 10 classes |
+|---------------|----------:|----------:|------------|
+| reseau        |         1 |         3 | 1          |
+| filter_size   |         7 |         3 | 3          |
+| size (image)  | 64        | 64        | 64         |
+| learning_rate | 0.001     | 0.001     | 0.001      |
+| nb_epoch      | 125       | 125       | 125        |
+| Accuracy      | 91.60%    | 81.60%    | 71.03%     |
 
 
 Bien entendu, pour généraliser le modèle, nous pouvons garder que le modèle à 10 classes, mais la précision sera plus faible. Si l’on est certain d’avoir un visuel de datavisualization dans les modèles à six classes ou trois classes, nous pourrons utiliser les modèles restreints qui apportent de meilleures performances.
 
-## Test d'une images
+## Test d'une image
 
-API ou unit test
-Explication radar (cf rapport)
+### Visualisation des différents scores : graphique radar 
+
+Lorsqu’ un modèle entrainé est testé sur le dossier d’images test, l’ensemble des résultats et des paramètres de configuration du modèle sont sauvegardés automatiquement dans un fichier JSON, notamment les prédictions pour chaque image d’appartenir à telle ou telle classe. Ceci permet de garder une trace de nos expérimentations et de traiter ces fichiers JSON afin de représenter les résultats des expériences de manière plus intuitive.
+
+Ainsi, à l’aide du framework D3.js, conçu pour faciliter la représentation de données sous des formats plus lisibles et exploitables analytiquement, nous avons opté pour la représentation Radar afin d’observer la distribution de probabilités pour chaque image test et voir si des tendances se dégageaient. 
+
+### Utilisation de l'API pour un affichage des résultats
+
+## Perspectives
+
+Afin d’explorer les possibilités offertes par les réseaux de neurones convolutionnels, nous avons mis en place cinq réseaux aux structures différentes. Les règles d’architecture d’un réseau de neurones ne sont pas précisément définies mais ils existent des bonnes pratiques qui nous ont guidées lors de la mise en place de nos réseaux.
+Si l’on peut penser que les performances d’un réseau par rapport à un autre sont difficiles à prévoir, ce projet nous l’a confirmé puisque nos résultats nous montrent qu’en fonction des caractéristiques des bases de données (taille des images, nombre de catégories…) le réseau le plus performant et les paramètres associés varient. 
+
+Cependant, nos résultats restent à nuancer pour deux raisons principales : notre base de données contenant moins de 500 images pour chacune des catégories, cela peut ne pas être suffisant pour permettre aux réseaux d’apprendre de façon suffisamment abstraite (la base de données MNIST comporte 7 000 images par catégorie !). De plus la puissance limitée de nos ordinateurs personnels nous a obligé à réduire la taille des filtres, ou la résolution des images et ainsi perdre des informations.
+
+Les pistes d'amélioration sont alors les suivantes : 
+- agrandissement considérable de la base de données
+- augmentation du nombre de catégories
+- amélioration du site : possibilité de choisir plusieurs réseau entraîné, possibilité de classer un dossier d'image à la place d'une image 
+- construction d'une base de données fournies et labelisées d'images de classification
+- publication des résultats
 
 
 ## Auteurs
