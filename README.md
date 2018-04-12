@@ -21,7 +21,7 @@ Dans le fichier <b>settings.py</b> il vous est possible de <b>modifier les diff�
 
 <b>Si vous souhaitez comprendre plus en détail le déroulement, les méthodes ainsi que les rendus du projet, le rapport regroupant tout cela est disponible dans le dossier document </b>.
 
-#Prise en main
+# Prise en main
 
 ## Lancement
 
