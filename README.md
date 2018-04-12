@@ -19,6 +19,8 @@ Comme chaque variable intermédiaire est enregistrée (modèle CNN entraînée, 
 
 Dans le fichier <b>settings.py</b> il vous est possible de <b>modifier les différents paramètres</b> clés utilisés dans nos scripts Python, comme la taille des images, le part de l'ensemble test, etc.
 
+<b>Si vous souhaitez comprendre plus en détail le déroulement, les méthodes ainsi que les rendus du projet, le rapport regroupant tout cela est disponible dans le dossier document </b>.
+
 #Prise en main
 
 ## Lancement
