@@ -259,7 +259,7 @@ Pour conclure, il est compliqué de prédire quel réseau et quels paramètres s
 
 
 |               | 3 classes | 6 classes | 10 classes |
-|---------------|----------:|----------:|------------|
+|---------------|:----------:|:----------:|:------------:|
 | reseau        |         1 |         3 | 1          |
 | filter_size   |         7 |         3 | 3          |
 | size (image)  | 64        | 64        | 64         |
