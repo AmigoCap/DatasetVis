@@ -175,29 +175,29 @@ Ces quatre objets sont sérialisés pour pouvoir être lus en entrée du réseau
 
 ## Choix des métriques de sortie
 
-### Valeurs de sortie
+#### Valeurs de sortie
 En sortie du réseau, nous obtenons un vecteur de probabilité d’appartenance à chaque classe. La probabilité la plus grande détermine la classe à laquelle est attribuée l’image.
 Il faut alors analyser ces attributions.
 
-### Matrice de confusion
+#### Matrice de confusion
 Cette matrice classe recoupent les prédictions avec les valeurs réelles. Sur la diagonale (True Positive) se situent les images bien classées. Cela permet d’avoir une vision de la précision du modèle.
 
-### Accuracy
+#### Accuracy
 Cette valeur calcule le nombre de d’instances bien classées. Elle permet de se rendre compte de la validité du modèle. Elle est égale à la somme des valeurs sur la diagonale divisée par la somme de tous les éléments de la table.
 
-### Recall ou rappel
+#### Recall ou rappel
 Cette valeur calcule pour chaque classe le nombre d’instances bien classées sur le nombre d’instances de la classe (True Positive / Total d’instances la classe). Cela permet de se rendre compte de la faculté du modèle à trouver ou non les éléments d’une classe.
 Le rappel total d’un modèle et la somme des rappels de chaque classe divisée par le nombre de classes.
 
-### Précision
+#### Précision
 Cette valeur calcule pour chaque classe le nombre d’instances bien classées sur le nombre d’instances attribuées à cette classe (True Positive / Total des prédictions de cette classe). Cela permet de se rendre compte de la pertinence du modèle dans la classification, i.e. à chaque fois qu’il prédit une classe, quelle est la chance pour que cette prédiction soit bonne.
 La précision totale d’un modèle et la somme des précisions de chaque classe divisée par le nombre de classes.
 
-### Sévérité du modèle (strictness class)
+#### Sévérité du modèle (strictness class)
 Ce paramètre est un paramètre additionnel qui nous permet de classer mieux que le hasard. En effet, il n’attribue une instance à une classe que si cette dernière a une probabilité x fois supérieur au hasard (1/nombre de classes). Dans notre modèle nous avons pris 1,3. Ce choix est arbitraire mais marque la volonté de classer de plus sûrement que le hasard. Si tel n’est pas le cas, cette instance est attribuée à la classe ‘uncategorized’, qui regroupe toutes les instances pour lesquelles aucune classe ne se démarque.
 
 
-## Construction de notre modèle finale
+## Construction de notre modèle final
 
 ### Choix des paramètres
 
@@ -236,17 +236,17 @@ Nous constatons que les résultats dépendent encore une fois du nombre de class
 
 Pour conclure, il est compliqué de prédire quel réseau et quels paramètres seront le mieux, avant de les tester sur les bases de données. De manière empirique, nous choisissons donc les modèles suivants :
 
-*** Code Markdown ***
-*********************
 
-|               |    3 classes    |    3 classes    |    10 classes   |
-| ------------- |: -------------: |: -------------: |: -------------: |
+
+|   Paramètres  |    3 classes    |    3 classes    |    10 classes   |
+| ------------- | : ------------: | : ------------: | : -----------:  |
 | reseau        |        1        |        3        |         1       |
 | filter_size   |        7        |        3        |         3       |
 | size (image)  |        64       |        64       |         64      |
 | learning_rate |        0.001    |        0.001    |         0.001   |
 | nb_epoch      |        125      |        125      |         125     |
 | Accuracy      |        91,60%   |        81,60%   |         71,03%  |
+
 
 Bien entendu, pour généraliser le modèle, nous pouvons garder que le modèle à 10 classes, mais la précision sera plus faible. Si l’on est certain d’avoir un visuel de datavisualization dans les modèles à six classes ou trois classes, nous pourrons utiliser les modèles restreints qui apportent de meilleures performances.
 
