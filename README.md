@@ -247,6 +247,12 @@ Pour conclure, il est compliqué de prédire quel réseau et quels paramètres s
 | nb_epoch      |        125      |        125      |         125     |
 | Accuracy      |        91,60%   |        81,60%   |         71,03%  |
 
+|        | 3 classes | 6 classes | 10 classes |
+|--------|----------:|----------:|------------|
+| Réseau |       ayj |         k | j          |
+| kd     |      hjdi |           | poj        |
+|        |           |           |            |
+
 
 Bien entendu, pour généraliser le modèle, nous pouvons garder que le modèle à 10 classes, mais la précision sera plus faible. Si l’on est certain d’avoir un visuel de datavisualization dans les modèles à six classes ou trois classes, nous pourrons utiliser les modèles restreints qui apportent de meilleures performances.
 
