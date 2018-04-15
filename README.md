@@ -104,6 +104,12 @@ Le fichier <main.py> permet de lancer les scripts :
 - <b>prediction.py</b> utilise le modèle entraîné sur un ensemble test créé au préalable et enregistre les métriques dans un fichier JSON.
 - <b>result.py</b> permet d'initialiser la structure de notre fichier JSON, avec notamment tous les paramètres choisis pour le lancement des scripts.
 
+## Utilisation de l'API
+
+L'utilisation de l'API est décrite sur le repository [DatasetVisApi](https://github.com/romsson/DatasetVisApi).
+
+Le site permettra alors de visualiser les prédictions suivants notre réseau de neurone sous la forme d'un graphe radar.
+
 
 # Pour une meilleure compréhension
 
